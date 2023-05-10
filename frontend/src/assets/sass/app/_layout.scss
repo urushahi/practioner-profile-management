@@ -1,0 +1,83 @@
+body {
+  min-height: 98vh;
+}
+.header {
+  @include e(dashboard) {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    width: 100%;
+    // width: calc(100% - #{$sidebar-width});
+    // transform: translateX($sidebar-width);
+    background-color: white;
+    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+    .container {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @include m(left) {
+      display: flex;
+      align-items: center;
+    }
+
+    @include m(right) {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .toggle__icon {
+      color: getColor('primary.base');
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      display: none;
+
+      @include mqmax(sm) {
+        display: block;
+      }
+    }
+  }
+
+  @include e(right) {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+
+.main {
+  position: relative;
+  .container {
+    height: calc(100vh - 120px);
+  }
+}
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.sideform {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  background-color: white;
+  transform: translateX(100%);
+  opacity: 0;
+  width: 0;
+  padding: 0;
+
+  &.show {
+    transform: translate(0);
+    opacity: 1;
+    padding: 2rem;
+    width: 500px;
+    transition: transform, opacity 1s ease-in-out;
+  }
+}

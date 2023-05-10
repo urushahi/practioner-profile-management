@@ -1,0 +1,16 @@
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  thead {
+    tr {
+      padding: 1rem 3rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      background-color: #f0f4f7;
+    }
+  }
+  td,
+  th {
+    padding: 0.75rem;
+    text-align: left;
+  }
+}

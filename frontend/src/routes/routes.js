@@ -1,20 +1,23 @@
-import { createBrowserRouter } from 'react-router-dom';
 import PractionerList from '../pages/Dashboard/PractitonerList/PractionerList';
-// import BagDetail from "pages/Dashboard/BagDetail";
-// import ManualBag from "pages/Dashboard/ManualBag";
-// import Evaluation from "pages/Evaluation";
-// import Login from "pages/login";
-// import Models from "pages/Models";
-// import PageNotFound from "pages/pageNotFound/PageNotFound";
-// import RequestTimeout from "pages/RequestTimeout";
 
 import { routes } from '../constants/routes';
-
-// import PrivateRoute from './PrivateRoutes';
+import PrivateRoute from './PrivateRoute';
+import Login from '../pages/Login/index';
+import { createBrowserRouter } from 'react-router-dom';
 
 export const BrowserRoutes = createBrowserRouter([
   {
-    path: routes.DASHBOARD,
-    element: <PractionerList />,
+    path: routes.LOGIN,
+    element: <Login />,
+  },
+  {
+    path: routes.PRIVATE_ROUTE,
+    element: <PrivateRoute />,
+    children: [
+      {
+        path: routes.DASHBOARD,
+        element: <PractionerList />,
+      },
+    ],
   },
 ]);
