@@ -19,8 +19,8 @@ module.exports = {
       contact,
       dob,
       working_days,
-      start_date,
-      end_date,
+      start_time,
+      end_time,
     } = data;
     const practitioners = {
       first_name,
@@ -29,8 +29,8 @@ module.exports = {
       contact,
       dob,
       working_days,
-      start_date,
-      end_date,
+      start_time,
+      end_time,
     };
 
     try {

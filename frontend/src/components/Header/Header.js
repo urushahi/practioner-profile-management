@@ -30,19 +30,15 @@ const Header = () => {
     <header className='header__dashboard'>
       <div className='container'>
         <div className='header__dashboard--left'>
-          <NavLink to={routes.DASHBOARD}>
-            <ul className='breadcrumbs'>
-              <li>Practitioner Profile Management System</li>
-            </ul>
-          </NavLink>
+          <h3 className='logo'>Practitioner's Profile Management System</h3>
 
-          <ul className='list list__nav ml-10x d-sm-flex d-none'>
+          {/* <ul className='list list__nav ml-10x d-sm-flex d-none'>
             {headerRoutes.map(({ to, title }, i) => (
               <li key={i}>
                 <NavLink>{title}</NavLink>
               </li>
             ))}
-          </ul>
+          </ul> */}
         </div>
         <div className='header__dashboard--right'>
           <button className='btn btn-error--outlined btn--sm'>Logout</button>

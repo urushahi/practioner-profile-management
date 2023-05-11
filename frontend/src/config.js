@@ -10,6 +10,7 @@ const config = {
     },
     practitioner: {
       getAllPractitioners: '/practitioners/',
+      createPractitioner: '/practitioners/',
     },
   },
 };

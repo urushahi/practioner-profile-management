@@ -36,7 +36,7 @@ const Table = (props) => {
             updatedDate,
           } = item;
           return (
-            <tr>
+            <tr key={id}>
               <td>{id}</td>
               <td>{firstName}</td>
               <td>{lastName}</td>
