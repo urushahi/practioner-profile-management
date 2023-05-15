@@ -2,10 +2,11 @@
 $white: #ffffff !default;
 $black: #000000 !default;
 
-$primary: #198f19 !default;
-$secondary: #66bb6a !default;
+$primary: #194e8f !default;
+$secondary: #198f19 !default;
+$success: #198f19 !default;
 
-$green: #249f5d !default;
+// $green: #198f19 !default;
 $red: #ef5350 !default;
 
 //Color Palette
@@ -33,9 +34,9 @@ $colorMap: (
     'dark': darken($red, 10%),
   ),
   'success': (
-    'base': $green,
-    'light': lighten($green, 10%),
-    'dark': darken($green, 10%),
+    'base': $success,
+    'light': lighten($success, 10%),
+    'dark': darken($success, 10%),
   ),
   'grey': (
     'base': #f5f8fa,

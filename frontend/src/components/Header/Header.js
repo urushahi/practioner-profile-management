@@ -19,13 +19,13 @@ const Header = () => {
     // },
   ];
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const logoutUser = useCallback(() => {
-  //   logout();
-  //   window.location.reload();
-  //   return navigate(routes.LOGIN);
-  // }, []);
+  const logoutUser = useCallback(() => {
+    // logout();
+    window.location.reload();
+    return navigate(routes.LOGIN);
+  }, []);
   return (
     <header className='header__dashboard'>
       <div className='container'>
@@ -41,7 +41,12 @@ const Header = () => {
           </ul> */}
         </div>
         <div className='header__dashboard--right'>
-          <button className='btn btn-error--outlined btn--sm'>Logout</button>
+          <button
+            className='btn btn-error--outlined btn--sm'
+            onClick={logoutUser}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </header>

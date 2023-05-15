@@ -14,12 +14,13 @@ model User {
   id           Int      @id @default(autoincrement())
   email        String   @unique
   name         String?
+  password     String   @default(dbgenerated("(crypt('', gen_salt('bf')))"))
   created_date DateTime @default(now())
   updated_date DateTime @updatedAt
 }
 
 model Practitioners {
-  practitioner_id Int      @id @default(autoincrement())
+  practitioner_id Int      @id @unique @default(autoincrement())
   first_name      String
   last_name       String
   email           String   @unique

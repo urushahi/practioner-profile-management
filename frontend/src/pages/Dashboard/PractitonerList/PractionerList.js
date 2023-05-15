@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Table from './components/Table';
 import { usePractitioners } from '../../../hooks/query/usePractitoners';
-import CreatePractioner from '../../CreatePractitioner/CreatePractioner';
+import { showSideBarAction } from '../../../slices/ui/sidebarSlice';
+import { useDispatch } from 'react-redux';
 
 const PractionerList = () => {
-  const [visibleSideForm, setToggleForm] = useState(false);
-  const toggleSideForm = () => setToggleForm(!visibleSideForm);
   const { data } = usePractitioners();
+  const disptach = useDispatch();
+  const showSidebar = () => {
+    disptach(showSideBarAction());
+  };
   return (
     <>
       <div className='d-flex justify-content-between align-items-center'>
         <h1 className='title font-16'>Pratitioner's List</h1>
         <div>
-          <button className='btn btn-primary' onClick={toggleSideForm}>
+          <button className='btn btn-secondary' onClick={showSidebar}>
             Add Practitioners
           </button>
         </div>
@@ -20,11 +23,6 @@ const PractionerList = () => {
       <div>
         <Table data={data} />
       </div>
-      <CreatePractioner
-        className={`sideform ${visibleSideForm ? 'show' : ''}`}
-        toggleForm={visibleSideForm}
-        toggleSideForm={toggleSideForm}
-      />
     </>
   );
 };

@@ -7,10 +7,13 @@ const config = {
   endpoints: {
     users: {
       getAllUsers: '/users/',
+      signupUser: '/users/',
     },
     practitioner: {
       getAllPractitioners: '/practitioners/',
       createPractitioner: '/practitioners/',
+      getPractitionersById: '/practitioners/',
+      updatePractitionersById: '/practitioners/',
     },
   },
 };

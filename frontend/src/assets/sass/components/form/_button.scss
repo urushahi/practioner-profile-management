@@ -55,6 +55,12 @@
       color: getColor('secondary.base');
     }
   }
+  @include e(iconOnly) {
+    padding: 0;
+    height: auto;
+    line-height: 1;
+    background: transparent;
+  }
 }
 
 .btn-outlined {
@@ -113,5 +119,13 @@
   &:hover {
     background-color: $red;
     color: white;
+  }
+}
+
+.btn-group {
+  display: flex;
+  align-items: center;
+  .btn:not(:last-child) {
+    margin-right: 0.5rem;
   }
 }

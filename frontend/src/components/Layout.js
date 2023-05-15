@@ -9,6 +9,7 @@ const Layout = ({ children }) => {
         <div className='main flex-grow'>
           <div className='container'>{children}</div>
         </div>
+        <CreatePractioner />
       </div>
     </>
   );

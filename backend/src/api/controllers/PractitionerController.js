@@ -39,8 +39,7 @@ module.exports = {
   updatePractitionerById: async (req, res) => {
     try {
       const id = Number(req.params.id);
-      const { name, email } = req.body;
-      const data = { name, email };
+      const data = req.body;
       const updatePractitioner = await updatePractitionerById(id, data);
       res.json(updatePractitioner);
     } catch (err) {
