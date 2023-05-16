@@ -1,0 +1,38 @@
+@mixin scrollable {
+  overflow: auto;
+  // cursor: pointer;
+  /* width */
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgba(getColor('grey.3'), 0.8);
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(getColor('grey.4'), 0.75);
+    cursor: pointer;
+  }
+}
+
+.scrollable-x {
+  overflow-x: auto;
+  overflow-y: hidden !important;
+  @include scrollable;
+}
+
+.scrollable {
+  @include scrollable;
+  overflow-x: auto !important;
+}

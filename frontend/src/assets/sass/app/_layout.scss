@@ -1,0 +1,120 @@
+body {
+  min-height: 98vh;
+  @include scrollable;
+}
+.header {
+  @include e(dashboard) {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    width: 100%;
+    // width: calc(100% - #{$sidebar-width});
+    // transform: translateX($sidebar-width);
+    background-color: white;
+    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+    .container {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @include m(left) {
+      display: flex;
+      align-items: center;
+    }
+
+    @include m(right) {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .toggle__icon {
+      color: getColor('primary.base');
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      display: none;
+
+      @include mqmax(sm) {
+        display: block;
+      }
+    }
+  }
+
+  @include e(right) {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+
+.main {
+  position: relative;
+  .container {
+    height: calc(100vh - 120px);
+  }
+}
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.sideForm {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  padding: 2rem;
+  width: 40%;
+  background-color: white;
+  &-wrapper {
+    position: fixed;
+    right: 0;
+    height: 100vh;
+    z-index: 100;
+    transform: translateX(100%);
+    background-color: rgba(black, 0.4);
+    opacity: 0;
+    width: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    @include scrollable;
+    overflow-x: hidden;
+
+    &.show {
+      transform: translate(0);
+      opacity: 1;
+      width: 100vw;
+      transition: transform, opacity 1s ease-in-out;
+    }
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+}
+
+.login {
+  &-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: getColor('primary.base');
+  }
+  &-form {
+    min-width: 400px;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 4px;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+      0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
+      0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+      0 100px 80px rgba(0, 0, 0, 0.07);
+  }
+}
