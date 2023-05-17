@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -19,16 +19,45 @@ model User {
   updated_date DateTime @updatedAt
 }
 
-model Practitioners {
-  practitioner_id Int      @id @unique @default(autoincrement())
-  first_name      String
-  last_name       String
-  email           String   @unique
-  contact         String
-  dob             DateTime
-  working_days    Int
-  start_time      DateTime
-  end_time        DateTime
-  created_date    DateTime @default(now())
-  updated_date    DateTime @updatedAt
+model Practitioner {
+  id                Int                   @id @default(autoincrement())
+  first_name        String
+  last_name         String
+  email             String                @unique
+  contact           String
+  image             String?
+  dob               String
+  start_time        String
+  end_time          String
+  is_ICU_Specialist Boolean               @default(false)
+  created_date      DateTime              @default(now())
+  updated_date      DateTime              @updatedAt
+  working_days      WorkingDay[]
+  allergies         PractitionerAllergy[]
+}
+
+model WorkingDay {
+  id              Int          @id @default(autoincrement())
+  day             Int
+  practitioner    Practitioner @relation(fields: [practitioner_id], references: [id])
+  practitioner_id Int
+}
+
+model Allergy {
+  id            Int                   @id @default(autoincrement())
+  allergy       String
+  created_date  DateTime              @default(now())
+  updated_date  DateTime              @updatedAt
+  practitioners PractitionerAllergy[]
+}
+
+model PractitionerAllergy {
+  id              Int          @id @default(autoincrement())
+  practitioner    Practitioner @relation(fields: [practitioner_id], references: [id])
+  practitioner_id Int
+  allergy         Allergy      @relation(fields: [allergy_id], references: [id])
+  allergy_id      Int
+
+  created_date DateTime @default(now())
+  updated_date DateTime @updatedAt
 }

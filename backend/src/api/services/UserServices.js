@@ -15,86 +15,65 @@ module.exports = {
   createUser: async (data) => {
     const { name, email, password } = data;
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
     const User = {
       name,
       email,
       password: hashedPassword,
     };
-
-    // login: async (data) => {
-    //   try {
-    //     const data = prisma.user.findMany();
-    //     const { password } = data;
-    //     const passwordMatch = await bcrypt.compare(password, password);
-    //     if (!passwordMatch) {
-    //       return res.status(401).json({ error: 'Invalid credentials' });
-    //     }
-
-    //     // Generate a JWT token
-    //     const token = jwt.sign({ id }, 'your-secret-key');
-    //     console.log(token);
-    //     return token;
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-
-    //     const saltRounds = 10;
-    // bcrypt.genSalt(saltRounds, (err, salt) => {
-    //   // Handle the salt generation error if any
-    //   if (err) {
-    //     console.error('Error generating salt:', err);
-    //     return;
-    //   }
-
-    //   // Use the salt for hashing or other operations
-    //   // Example:
-    //   const password = 'myPassword';
-    //   bcrypt.hash(password, salt, (err, hash) => {
-    //     // Handle the hash generation error if any
-    //     if (err) {
-    //       console.error('Error generating hash:', err);
-    //       return;
-    //     }
-
-    //     // Store the hash in the database or use it as needed
-    //     console.log('Hash:', hash);
-    //   });
-    // });
-
     try {
+      // check if email already exists
+      const existingUser = await prisma.user.findUnique({
+        where: { email },
+      });
+      if (existingUser) {
+        throw new Error('Email already exists');
+      }
       const createUser = prisma.user.create({ data: User });
+      // const { password: _password, ...userWithoutPassword } = createUser; //spread operator use gareko yo
       return createUser;
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   },
-  getUsersById: async (payload) => {
+
+  checkUser: async (data) => {
     try {
-      const user = await prisma.user.findUnique({
+      const user = prisma.user.findUnique({
+        where: data,
+      });
+      if (!user) {
+        throw new Error('User not found');
+      }
+      return user;
+    } catch (err) {
+      throw err;
+    }
+  },
+
+  getUsersById: async ({ email, password }) => {
+    try {
+      const user = prisma.user.findUnique({
         where: {
-          email: payload.email,
+          email,
         },
       });
       if (!user) {
-        return { error: 'Invalid credentials' };
+        return res.status(401).json({ error: 'Invalid credentials' });
       }
+
       // Compare the provided password with the stored hash
-      const passwordMatch = await bcrypt.compare(
-        payload.password,
-        user.password
-      );
+      const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (!passwordMatch) {
-        return { error: 'Invalid credentials' };
+        return res.status(401).json({ error: 'Invalid credentials' });
       }
 
-      const token = await jwt.sign(payload, 'secretKey');
+      // Generate a JWT token
+      const token = jwt.sign({ userId: user.id }, 'your-secret-key');
 
-      return { token: token };
+      res.json({ message: 'Login successful', token });
     } catch (error) {
-      return error.message;
+      res.status(500).json({ error: 'Failed to login' });
     }
   },
 
