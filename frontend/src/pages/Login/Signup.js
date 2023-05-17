@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import InputComponent from '../../components/common/InputComponent';
-import { useCreateUsers } from '../../hooks/query/useUsers';
+import { useLogin } from '../../hooks/query/useAuth';
 
 const initialValues = {
   name: '',
@@ -16,7 +16,7 @@ const Signup = () => {
   const togglePasswordIcon = () => setPasswordIcon(!passwordIcon);
   const navigate = useNavigate();
 
-  const { values, handleChange, errors, handleSubmit } = useCreateUsers({
+  const { values, handleChange, errors, handleSubmit } = useLogin({
     initialValues,
     onSuccess: () => {
       navigate('/login');

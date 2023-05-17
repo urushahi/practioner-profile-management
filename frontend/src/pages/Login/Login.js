@@ -3,33 +3,46 @@ import React, { useState } from 'react';
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import InputComponent from '../../components/common/InputComponent';
+import { useLogin } from '../../hooks/query/useAuth';
 
+const initialValues = {
+  email: '',
+  password: '',
+};
 const Login = () => {
   const [passwordIcon, setPasswordIcon] = useState(true);
   const togglePasswordIcon = () => setPasswordIcon(!passwordIcon);
+  const navigate = useNavigate();
 
+  const { values, handleChange, errors, handleSubmit } = useLogin({
+    initialValues,
+    onSuccess: () => {
+      navigate('/');
+    },
+  });
   return (
     <>
       <div className='login-wrapper'>
-        <form className='login-form'>
+        <form action='' onSubmit={handleSubmit} className=' login-form'>
           <h3 className='text-center mb-3'>Login</h3>
           <InputComponent
-            name={'Email'}
+            name={'email'}
+            type='email'
             labelText={'Email'}
-            // onChange={handleChange}
-            // placeholder={'someone@mail.com'}
-            // value={values.contact}
-            // errorMessage={errors.contact}
+            onChange={handleChange}
+            placeholder={'someone@mail.com'}
+            value={values.email}
+            errorMessage={errors.email}
           />
 
           <InputComponent
             name={'password]'}
             labelText={'Password'}
             type={`${passwordIcon ? 'password' : 'text'}`}
-            // onChange={handleChange}
-            // placeholder={'someone@mail.com'}
-            // value={values.contact}
-            // errorMessage={errors.contact}
+            onChange={handleChange}
+            placeholder={'someone@mail.com'}
+            value={values.password}
+            errorMessage={errors.password}
             icon={
               <div
                 className='input-group-icon'
@@ -39,7 +52,7 @@ const Login = () => {
               </div>
             }
           />
-          <button className='btn btn-secondary btn--block' onClick='/'>
+          <button type='submit' className='btn btn-secondary btn--block'>
             Log In
           </button>
           <p className='message text-center mt-3x'>

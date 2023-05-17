@@ -1,31 +1,14 @@
-import React, { useCallback } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { BrowserRoutes as routes } from '../../routes/routes';
 
 const Header = () => {
-  const headerRoutes = [
-    {
-      to: routes.DASHBOARD,
-      title: 'Practitioners Lists',
-    },
-    // {
-    //   to: routes.EVALUATION,
-    //   title: 'Evaluation',
-    // },
-    // {
-    //   to: routes.MODELS,
-    //   title: 'Models',
-    // },
-  ];
-
   const navigate = useNavigate();
 
-  const logoutUser = useCallback(() => {
-    // logout();
-    window.location.reload();
-    return navigate(routes.LOGIN);
-  }, []);
+  const logoutUser = () => {
+    return navigate('/login');
+  };
   return (
     <header className='header__dashboard'>
       <div className='container'>
@@ -43,7 +26,7 @@ const Header = () => {
         <div className='header__dashboard--right'>
           <button
             className='btn btn-error--outlined btn--sm'
-            onClick={logoutUser}
+            onClick={() => logoutUser()}
           >
             Logout
           </button>

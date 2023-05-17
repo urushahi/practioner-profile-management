@@ -3,8 +3,6 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { showSideBarAction } from '../../../../slices/ui/sidebarSlice';
 import { deletePractitionerById } from '../../../../services/practitioners';
-import { useQueryClient } from 'react-query';
-import { useDeletePractitionersById } from '../../../../hooks/query/usePractitoners';
 
 const Table = (props) => {
   const { data } = props;

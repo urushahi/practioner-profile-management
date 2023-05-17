@@ -8,6 +8,7 @@ const config = {
     users: {
       getAllUsers: '/users/',
       signupUser: '/users/',
+      login: '/login',
     },
     practitioner: {
       getAllPractitioners: '/practitioners/',
