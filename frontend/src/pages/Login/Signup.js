@@ -6,10 +6,12 @@ import InputComponent from '../../components/common/InputComponent';
 import { useLogin } from '../../hooks/query/useAuth';
 
 const initialValues = {
+  name: '',
   email: '',
   password: '',
+  repeatPassword: '',
 };
-const Login = () => {
+const Signup = () => {
   const [passwordIcon, setPasswordIcon] = useState(true);
   const togglePasswordIcon = () => setPasswordIcon(!passwordIcon);
   const navigate = useNavigate();
@@ -17,22 +19,31 @@ const Login = () => {
   const { values, handleChange, errors, handleSubmit } = useLogin({
     initialValues,
     onSuccess: () => {
-      navigate('/');
+      navigate('/login');
     },
   });
   return (
     <>
       <div className='login-wrapper'>
-        <form action='' onSubmit={handleSubmit} className=' login-form'>
-          <h3 className='text-center mb-3'>Login</h3>
+        <form action='' onSubmit={handleSubmit} className='login-form'>
+          <h3 className='text-center mb-3'>Sign Up</h3>
+          <InputComponent
+            name={'name'}
+            labelText={'Name'}
+            onChange={handleChange}
+            placeholder={'e.g. John Doe'}
+            value={values.name}
+            errorMessage={errors.name}
+          />
+
           <InputComponent
             name={'email'}
-            type='email'
             labelText={'Email'}
             onChange={handleChange}
-            placeholder={'someone@mail.com'}
+            placeholder={'e.g. someone@mail.com'}
             value={values.email}
             errorMessage={errors.email}
+            type='email'
           />
 
           <InputComponent
@@ -52,11 +63,27 @@ const Login = () => {
               </div>
             }
           />
+          <InputComponent
+            name={'repeatPassword]'}
+            labelText={'Repeat Password'}
+            type={`${passwordIcon ? 'password' : 'text'}`}
+            onChange={handleChange}
+            value={values.repeatPassword}
+            errorMessage={errors.repeatPassword}
+            icon={
+              <div
+                className='input-group-icon'
+                onClick={() => togglePasswordIcon()}
+              >
+                {passwordIcon ? <BsEyeFill /> : <BsEyeSlashFill />}
+              </div>
+            }
+          />
           <button type='submit' className='btn btn-secondary btn--block'>
-            Log In
+            Sign Up
           </button>
           <p className='message text-center mt-3x'>
-            Don't have an account? <Link to='/signup'>Sign Up</Link>
+            Already have an account? <Link to='/login'>Login</Link>
           </p>
         </form>
       </div>
@@ -64,4 +91,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

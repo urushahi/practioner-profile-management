@@ -1,12 +1,6 @@
-import { getFormattedDate, getFormattedTime } from '../../utils/date';
+import { getFormattedDate, getFormattedTimeOnly } from '../../utils/date';
 
 export default function fromJson(payload) {
-  const data = payload.map(mappedData);
-
-  return data;
-}
-
-function mappedData(practitioner) {
   const {
     practitioner_id: id,
     first_name: firstName,
@@ -19,7 +13,7 @@ function mappedData(practitioner) {
     end_time: endTime,
     created_date: createdDate,
     updated_date: updatedDate,
-  } = practitioner;
+  } = payload;
   return {
     id,
     firstName,
@@ -28,8 +22,8 @@ function mappedData(practitioner) {
     contact,
     dob: getFormattedDate(dob),
     workingDays,
-    startTime: getFormattedTime(startTime),
-    endTime: getFormattedTime(endTime),
+    startTime: getFormattedTimeOnly(startTime),
+    endTime: getFormattedTimeOnly(endTime),
     createdDate: getFormattedDate(createdDate),
     updatedDate: getFormattedDate(updatedDate),
   };

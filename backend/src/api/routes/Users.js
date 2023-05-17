@@ -11,7 +11,7 @@ router.post('/', controller.createUser);
 
 // get user by id
 
-router.get('/:id', controller.getUserById);
+router.get('/', controller.getUserById);
 
 // update user by id
 

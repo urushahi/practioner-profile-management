@@ -12,6 +12,8 @@ export default function toJson(payload) {
     workingDays,
     startTime,
     endTime,
+    createdDate,
+    updatedDate,
   } = payload;
   return {
     practitioner_id: id,
@@ -23,5 +25,7 @@ export default function toJson(payload) {
     working_days: workingDays,
     start_time: getTimeStampFromTime(startTime),
     end_time: getTimeStampFromTime(endTime),
+    created_date: createdDate,
+    updated_date: updatedDate,
   };
 }

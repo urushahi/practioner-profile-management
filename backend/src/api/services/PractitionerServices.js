@@ -5,7 +5,13 @@ const prisma = new PrismaClient();
 module.exports = {
   getPractitioners: () => {
     try {
-      const data = prisma.practitioners.findMany();
+      const data = prisma.practitioners.findMany({
+        orderBy: [
+          {
+            practitioner_id: 'asc',
+          },
+        ],
+      });
       return data;
     } catch (err) {
       console.log(err);
@@ -42,16 +48,18 @@ module.exports = {
       console.log(err);
     }
   },
-  getPractitionerById: (id) => {
-    try {
-      const data = prisma.practitioners.findUnique({
-        where: {
-          id,
-        },
-      });
-      return data;
-    } catch (err) {
-      console.log(err);
+  getPractitionersById: (id) => {
+    if (id !== null) {
+      try {
+        const data = prisma.practitioners.findUnique({
+          where: {
+            practitioner_id: parseInt(id),
+          },
+        });
+        return data;
+      } catch (err) {
+        console.log(err);
+      }
     }
   },
 
@@ -60,7 +68,7 @@ module.exports = {
       // const {name,email} = data;
       const practitioners = prisma.practitioners.update({
         where: {
-          id,
+          practitioner_id: parseInt(id),
         },
         data,
       });
@@ -74,7 +82,7 @@ module.exports = {
       // const {name,email} = data;
       const deletePractitioners = prisma.practitioners.delete({
         where: {
-          id,
+          practitioner_id: parseInt(id),
         },
       });
       return deletePractitioners;

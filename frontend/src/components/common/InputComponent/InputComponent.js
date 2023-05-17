@@ -26,6 +26,7 @@ const InputComponent = (props) => {
     autoComplete = 'off',
     size = '',
     className = '',
+    icon = '',
   } = props;
 
   const errorClass = errorMessage ? 'form-group--has-error' : '';
@@ -40,21 +41,24 @@ const InputComponent = (props) => {
           {labelText}
           {isRequired && <span className='text-error-base'> *</span>}
         </label>
-        <input
-          id={id}
-          type={type}
-          disabled={disabled}
-          name={name}
-          defaultValue={value}
-          onBlur={onBlur}
-          readOnly={isReadOnly}
-          onChange={onChange}
-          style={{ fontSize }}
-          placeholder={placeholder}
-          className='form-group__control'
-          onKeyDown={onKeyDown}
-          autoComplete={autoComplete}
-        />
+        <div className={`${icon && 'input-group'}  `}>
+          <input
+            id={id}
+            type={type}
+            disabled={disabled}
+            name={name}
+            defaultValue={value}
+            onBlur={onBlur}
+            readOnly={isReadOnly}
+            onChange={onChange}
+            style={{ fontSize }}
+            placeholder={placeholder}
+            className='form-group__control'
+            onKeyDown={onKeyDown}
+            autoComplete={autoComplete}
+          />
+          {icon}
+        </div>
         {errorMessage && (
           <span className='form-group__error'>{errorMessage}</span>
         )}

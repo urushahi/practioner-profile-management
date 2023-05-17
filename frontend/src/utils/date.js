@@ -17,8 +17,14 @@ export const getFormattedDate = (timestamp) => {
   return date;
 };
 
-// convertTimeStamp to date
+// convertTimeStamp to time
 export const getFormattedTime = (timestamp) => {
-  const time = moment(timestamp).format('HH : MM :SS');
+  const time = moment(timestamp).format('HH : MM a');
+  return time;
+};
+
+// convertTimeStamp to time
+export const getFormattedTimeOnly = (timestamp) => {
+  const time = moment(timestamp).format('HH:MM');
   return time;
 };

@@ -1,4 +1,3 @@
-const pool = require('../../config');
 const {
   getUsers,
   createUser,
@@ -36,6 +35,14 @@ module.exports = {
     }
   },
 
+  login: async (req, res) => {
+    try {
+      const getUserById = await getUsersById(req.body);
+      res.json(getUserById);
+    } catch (err) {
+      console.error(err.message);
+    }
+  },
   updateUserById: async (req, res) => {
     try {
       const id = Number(req.params.id);
