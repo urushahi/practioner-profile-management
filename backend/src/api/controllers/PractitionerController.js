@@ -19,7 +19,6 @@ module.exports = {
       return res.status(200).json(successResponse(allPractitioners));
     } catch (err) {
       return res.status(500).json(errorResponse());
-      console.error(err.message);
     }
   },
 
@@ -29,7 +28,6 @@ module.exports = {
       const newPractitioner = await createPractitioner(req.body);
       return res.status(200).json(successResponse(newPractitioner));
     } catch (err) {
-      console.log(err);
       if (err.message === 'Validation Failed') {
         const response = validationFailedResponse(err.errors);
         return res.status(response.statusCode).json(response);
@@ -48,7 +46,6 @@ module.exports = {
       const getPractitionerById = await getPractitionersById(id);
       return res.status(200).json(successResponse(getPractitionerById));
     } catch (err) {
-      console.log(err);
       if (err.message === 'Practitioner not found') {
         return res.status(404).json(errorResponse(err.message, 404));
       }
