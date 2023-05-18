@@ -10,6 +10,7 @@ const createPatientSchema = Joi.object({
   start_time: Joi.required(),
   end_time: Joi.required(),
   working_days: Joi.array().items(Joi.number()).required(),
+  allergies: Joi.array().items(Joi.number()),
   is_ICU_Specialist: Joi.boolean(),
 });
 

@@ -14,6 +14,7 @@ module.exports = {
         ],
         include: {
           working_days: true,
+          allergies: true,
         },
       });
       return data;
@@ -23,33 +24,11 @@ module.exports = {
   },
 
   createPractitioner: async (data) => {
-    const {
-      first_name,
-      last_name,
-      email,
-      contact,
-      dob,
-      start_time,
-      end_time,
-      working_days,
-      is_ICU_Specialist,
-    } = data;
-    console.log(data);
-    const practitioners = {
-      first_name,
-      last_name,
-      email,
-      contact,
-      dob,
-      start_time,
-      end_time,
-      is_ICU_Specialist,
-    };
-
+    const { working_days, allergies, ...payload } = data;
     try {
       const practitioner = await prisma.practitioner.findUnique({
         where: {
-          email,
+          email: payload.email,
         },
       });
 
@@ -57,9 +36,10 @@ module.exports = {
         throw new Error('Email already exists');
       }
       const createPractitioners = await prisma.practitioner.create({
-        data: practitioners,
+        data: payload,
         include: {
           working_days: true,
+          allergies: true,
         },
       });
       await prisma.workingDay.createMany({
@@ -68,12 +48,22 @@ module.exports = {
           practitioner_id: createPractitioners.id,
         })),
       });
+
+      // data: [{allergy_id: 1, practitioner_id: 1}, {allerg_id: 2, practitioner_id 2}]
+      if (allergies && allergies.length > 0) {
+        await prisma.practitionerAllergy.createMany({
+          data: allergies.map((allergy) => ({
+            allergy_id: allergy,
+            practitioner_id: createPractitioners.id,
+          })),
+        });
+      }
       return createPractitioners;
     } catch (err) {
-      console.log(err);
       throw err;
     }
   },
+
   getPractitionersById: async (id) => {
     if (id !== null) {
       try {
@@ -83,6 +73,7 @@ module.exports = {
           },
           include: {
             working_days: true,
+            allergies: true,
           },
         });
         if (!data) {
@@ -104,7 +95,7 @@ module.exports = {
         throw new Error('Practitioner not found');
       }
 
-      const { working_days, ...payload } = data;
+      const { working_days, allergies, ...payload } = data;
 
       const updatedPractitioner = await prisma.practitioner.update({
         where: {
@@ -115,16 +106,20 @@ module.exports = {
             deleteMany: {},
             create: working_days.map((day) => ({ day })),
           },
+          allergies: {
+            deleteMany: {},
+            create: allergies.map((allergy) => ({ allergy_id: allergy })),
+          },
           ...payload,
         },
         include: {
           working_days: true,
+          allergies: true,
         },
       });
 
       return updatedPractitioner;
     } catch (err) {
-      console.log(err);
       throw err;
     }
   },
@@ -141,15 +136,23 @@ module.exports = {
           practitioner_id: id,
         },
       });
+      const deleteAllergy = prisma.practitionerAllergy.deleteMany({
+        where: {
+          practitioner_id: id,
+        },
+      });
       const deletePractitioners = prisma.practitioner.deleteMany({
         where: {
           id,
         },
       });
-      await prisma.$transaction([deleteWorkingDay, deletePractitioners]);
+      await prisma.$transaction([
+        deleteWorkingDay,
+        deleteAllergy,
+        deletePractitioners,
+      ]);
       return true;
     } catch (err) {
-      console.log(err);
       throw err;
     }
   },
