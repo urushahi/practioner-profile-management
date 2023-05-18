@@ -1,93 +1,156 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const moment = require('moment');
 
 module.exports = {
   getPractitioners: () => {
     try {
-      const data = prisma.practitioners.findMany({
+      const data = prisma.practitioner.findMany({
         orderBy: [
           {
-            practitioner_id: 'asc',
+            id: 'asc',
           },
         ],
+        include: {
+          working_days: true,
+        },
       });
       return data;
     } catch (err) {
-      console.log(err);
+      throw new Error('Error retrieving practitioners');
     }
   },
-  createPractitioner: (data) => {
+
+  createPractitioner: async (data) => {
     const {
       first_name,
       last_name,
       email,
       contact,
       dob,
-      working_days,
       start_time,
       end_time,
+      working_days,
+      is_ICU_Specialist,
     } = data;
+    console.log(data);
     const practitioners = {
       first_name,
       last_name,
       email,
       contact,
       dob,
-      working_days,
       start_time,
       end_time,
+      is_ICU_Specialist,
     };
 
     try {
-      const createPractitioners = prisma.practitioners.create({
+      const practitioner = await prisma.practitioner.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (practitioner) {
+        throw new Error('Email already exists');
+      }
+      const createPractitioners = await prisma.practitioner.create({
         data: practitioners,
+        include: {
+          working_days: true,
+        },
+      });
+      await prisma.workingDay.createMany({
+        data: working_days.map((day) => ({
+          day,
+          practitioner_id: createPractitioners.id,
+        })),
       });
       return createPractitioners;
     } catch (err) {
       console.log(err);
+      throw err;
     }
   },
-  getPractitionersById: (id) => {
+  getPractitionersById: async (id) => {
     if (id !== null) {
       try {
-        const data = prisma.practitioners.findUnique({
+        const data = await prisma.practitioner.findUnique({
           where: {
-            practitioner_id: parseInt(id),
+            id: parseInt(id),
+          },
+          include: {
+            working_days: true,
           },
         });
+        if (!data) {
+          throw new Error('Practitioner not found');
+        }
         return data;
       } catch (err) {
-        console.log(err);
+        throw err;
       }
+    } else {
+      throw new Error('Missing ID');
     }
   },
 
-  updatePractitionerById: (id, data) => {
+  updatePractitionerById: async (id, data) => {
     try {
-      // const {name,email} = data;
-      const practitioners = prisma.practitioners.update({
+      const findPractitioner = await module.exports.getPractitionersById(id); // Call getPractitionersById function
+      if (!findPractitioner) {
+        throw new Error('Practitioner not found');
+      }
+
+      const { working_days, ...payload } = data;
+
+      const updatedPractitioner = await prisma.practitioner.update({
         where: {
-          practitioner_id: parseInt(id),
+          id,
         },
-        data,
+        data: {
+          working_days: {
+            deleteMany: {},
+            create: working_days.map((day) => ({ day })),
+          },
+          ...payload,
+        },
+        include: {
+          working_days: true,
+        },
       });
-      return practitioners;
+
+      return updatedPractitioner;
     } catch (err) {
       console.log(err);
+      throw err;
     }
   },
-  deletePractitionerById: (id) => {
+
+  deletePractitionerById: async (id) => {
     try {
-      // const {name,email} = data;
-      const deletePractitioners = prisma.practitioners.delete({
+      const findPractitioner = await module.exports.getPractitionersById(id); // Call getPractitionersById function
+      if (!findPractitioner) {
+        throw new Error('Practitioner not found'); // Throw an error with a specific message
+      }
+
+      const deleteWorkingDay = prisma.workingDay.deleteMany({
         where: {
-          practitioner_id: parseInt(id),
+          practitioner_id: id,
         },
       });
-      return deletePractitioners;
+      const deletePractitioners = prisma.practitioner.deleteMany({
+        where: {
+          id,
+        },
+      });
+      await prisma.$transaction([deleteWorkingDay, deletePractitioners]);
+      return true;
     } catch (err) {
       console.log(err);
+      throw err;
     }
   },
 };
