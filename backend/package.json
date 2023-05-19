@@ -20,7 +20,9 @@
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
-    "pg": "^8.10.0"
+    "pg": "^8.10.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
     "prisma": "^4.13.0"
