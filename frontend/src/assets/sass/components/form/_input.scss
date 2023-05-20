@@ -30,7 +30,7 @@
   }
   @include e(control) {
     width: 100%;
-    border: 1px solid getColor('grey.4');
+    border: 1px solid getColor('grey.3');
     padding: 0 getSpacing('3x');
     color: getColor('grey.4');
     border-radius: 4px;
@@ -45,7 +45,7 @@
       border-color: getColor('primary.base');
       box-shadow: 0px 0px 0px 1px getColor('primary.base');
       &:hover {
-        border-color: getColor('grey.4');
+        border-color: getColor('primary.base');
       }
     }
     &:disabled {
@@ -76,6 +76,36 @@
     display: none;
     .form-group--has-error & {
       display: block;
+    }
+  }
+
+  @include m(inline) {
+    display: flex;
+    align-items: center;
+    .form-group__label {
+      margin-bottom: 0;
+      margin-left: 0.5rem;
+    }
+  }
+
+  @include m(checkbox) {
+    .form-group__label,
+    input {
+      cursor: pointer;
+    }
+  }
+  @include e(select) {
+    .form-control {
+      border: 1px solid getColor('grey.3');
+      color: getColor('grey.4');
+      border-radius: 4px;
+      &--focus {
+        border-color: getColor('primary.base');
+        &:hover {
+          border-color: getColor('primary.base');
+          box-shadow: 0px 0px 0px 1px #194e8f;
+        }
+      }
     }
   }
 }

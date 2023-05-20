@@ -1,7 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-import { BrowserRoutes as routes } from '../../routes/routes';
+import { routes } from '../../constants/routes';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -15,13 +15,11 @@ const Header = () => {
         <div className='header__dashboard--left'>
           <h3 className='logo'>Practitioner's Profile Management System</h3>
 
-          {/* <ul className='list list__nav ml-10x d-sm-flex d-none'>
-            {headerRoutes.map(({ to, title }, i) => (
-              <li key={i}>
-                <NavLink>{title}</NavLink>
-              </li>
-            ))}
-          </ul> */}
+          <ul className='list list-nav ml-8x'>
+            <li>
+              <NavLink to={routes.DASHBOARD}>Practitioner</NavLink>
+            </li>
+          </ul>
         </div>
         <div className='header__dashboard--right'>
           <button

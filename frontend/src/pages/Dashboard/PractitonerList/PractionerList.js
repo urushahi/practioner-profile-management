@@ -5,7 +5,7 @@ import { showSideBarAction } from '../../../slices/ui/sidebarSlice';
 import { useDispatch } from 'react-redux';
 
 const PractionerList = () => {
-  const { data } = usePractitioners();
+  const { data, isLoading } = usePractitioners();
   const disptach = useDispatch();
   const showSidebar = () => {
     disptach(showSideBarAction());
@@ -13,15 +13,15 @@ const PractionerList = () => {
   return (
     <>
       <div className='d-flex justify-content-between align-items-center'>
-        <h1 className='title font-16'>Pratitioner's List</h1>
+        <h1 className='title'>Pratitioner's List</h1>
         <div>
           <button className='btn btn-secondary' onClick={showSidebar}>
             Add Practitioners
           </button>
         </div>
       </div>
-      <div>
-        <Table data={data} />
+      <div className='table-wrapper'>
+        <Table data={data} isLoading={isLoading} />
       </div>
     </>
   );

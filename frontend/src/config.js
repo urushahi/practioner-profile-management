@@ -15,6 +15,10 @@ const config = {
       createPractitioner: '/practitioners/',
       getPractitionersById: '/practitioners/',
       updatePractitionersById: '/practitioners/',
+      deletePractitionersById: '/practitioners/',
+    },
+    allergies: {
+      getAllAllergies: '/allergies/',
     },
   },
 };

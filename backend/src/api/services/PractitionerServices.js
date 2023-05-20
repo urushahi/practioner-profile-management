@@ -13,7 +13,11 @@ module.exports = {
         ],
         include: {
           working_days: true,
-          allergies: true,
+          allergies: {
+            include: {
+              allergy: true,
+            },
+          },
         },
       });
       return data;
@@ -72,7 +76,11 @@ module.exports = {
           },
           include: {
             working_days: true,
-            allergies: true,
+            allergies: {
+              include: {
+                allergy: true,
+              },
+            },
           },
         });
         if (!data) {

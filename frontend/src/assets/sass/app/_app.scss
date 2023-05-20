@@ -8,6 +8,11 @@
   height: 100%;
 }
 .logo {
-  font-size: 28px;
+  font-size: 1rem;
   color: getColor('primary.base');
+}
+.title {
+  color: getColor('grey.4');
+  font-size: 1.5rem;
+  font-weight: 500;
 }
