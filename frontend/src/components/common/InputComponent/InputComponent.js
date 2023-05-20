@@ -39,7 +39,7 @@ const InputComponent = (props) => {
       >
         <label className='form-group__label'>
           {labelText}
-          {isRequired && <span className='text-error-base'> *</span>}
+          {isRequired && <span className='color-danger--base'> *</span>}
         </label>
         <div className={`${icon && 'input-group'}  `}>
           <input

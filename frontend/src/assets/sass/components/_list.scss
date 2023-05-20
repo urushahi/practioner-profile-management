@@ -1,0 +1,10 @@
+.list {
+  &-nav {
+    display: flex;
+    li {
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
+}

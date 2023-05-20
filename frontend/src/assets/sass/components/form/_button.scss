@@ -61,6 +61,10 @@
     line-height: 1;
     background: transparent;
   }
+
+  @include m(sm) {
+    padding: 0.25rem;
+  }
 }
 
 .btn-outlined {
@@ -108,6 +112,9 @@
     &:hover {
       background-color: $color;
       color: getColor('white.base');
+    }
+    &:disabled {
+      color: inherit;
     }
   }
 }

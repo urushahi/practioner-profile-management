@@ -8,7 +8,7 @@ import getPractitionersById from '../entities/practitionersById';
 export const fetchAllPractitioners = async (payload = {}) => {
   const url = config.endpoints.practitioner.getAllPractitioners;
   const { data } = await http.get(url);
-  return practitionersList.fromJson(data);
+  return practitionersList.fromJson(data.data);
 };
 
 export const createPractioners = async (payload) => {
@@ -20,7 +20,7 @@ export const createPractioners = async (payload) => {
 export const getPractitionerById = async (id) => {
   const url = config.endpoints.practitioner.getPractitionersById + id;
   const { data } = await http.get(url);
-  return getPractitionersById.fromJson(data);
+  return getPractitionersById.fromJson(data.data);
 };
 
 export const updatePractitionerById = async (payload) => {
@@ -31,6 +31,6 @@ export const updatePractitionerById = async (payload) => {
 };
 
 export const deletePractitionerById = async (id) => {
-  const url = config.endpoints.practitioner.updatePractitionersById + id;
+  const url = config.endpoints.practitioner.deletePractitionersById + id;
   return await http.delete(url);
 };

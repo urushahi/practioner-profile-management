@@ -16,7 +16,6 @@ const sidebarSlice = createSlice({
       state.sidebar.show = true;
       state.sidebar.id = action?.payload?.id;
       state.sidebar.title = action?.payload?.title;
-      console.log(action?.payload?.content);
     },
     hideSideBarAction: (state) => {
       state.sidebar.show = false;

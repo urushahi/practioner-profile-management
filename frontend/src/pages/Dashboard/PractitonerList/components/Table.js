@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { showSideBarAction } from '../../../../slices/ui/sidebarSlice';
+import { WorkingDays } from '../../../../constants/constants';
+import Badge from '../../../../components/common/Badge';
 import { deletePractitionerById } from '../../../../services/practitioners';
+import ReactTable from '../../../../components/common/ReactTable/ReactTable';
 
 const Table = (props) => {
   const { data } = props;
   const disptach = useDispatch();
+
   const updateForm = (id) => {
     disptach(showSideBarAction({ id: id, title: 'Update Practitioner' }));
   };
@@ -15,77 +19,108 @@ const Table = (props) => {
     deletePractitionerById(id);
   };
 
-  return (
-    <table className='table mt-5x '>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th>Contact</th>
-          <th>DOB</th>
-          <th>Working days</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Created date</th>
-          <th>Updated date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data?.map((item) => {
-          const {
-            id,
-            firstName,
-            lastName,
-            email,
-            contact,
-            dob,
-            workingDays,
-            startTime,
-            endTime,
-            createdDate,
-            updatedDate,
-          } = item;
-          return (
-            <tr key={id}>
-              <td>{id}</td>
-              <td>{firstName}</td>
-              <td>{lastName}</td>
-              <td>{email}</td>
-              <td>{contact}</td>
-              <td>{dob}</td>
-              <td>{workingDays}</td>
-              <td>{startTime}</td>
-              <td>{endTime}</td>
-              <td>{createdDate}</td>
-              <td>{updatedDate}</td>
-              <td>
-                <div className='btn-group'>
-                  <button className='btn btn__iconOnly'>
-                    <MdEdit
-                      size={16}
-                      className='color-primary--base'
-                      onClick={() => updateForm(id)}
-                    />
-                  </button>
-                  <button className='btn btn__iconOnly'>
-                    <MdDelete
-                      size={16}
-                      className='color-danger--base'
-                      onClick={(e) => deletePractitioner(e, id)}
-                    />
-                  </button>
-                </div>
-              </td>
-            </tr>
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'S.N',
+        Cell: (value) => {
+          return <>{value.row.index + 1}</>;
+        },
+      },
+      {
+        Header: 'First Name',
+        accessor: 'firstName',
+      },
+      {
+        Header: 'Last Name',
+        accessor: 'lastName',
+      },
+      {
+        Header: 'Email',
+        accessor: 'email',
+      },
+      {
+        Header: 'Contact',
+        accessor: 'contact',
+      },
+      {
+        Header: 'Date of Birth',
+        accessor: 'dob',
+      },
+      {
+        Header: 'Working days',
+        accessor: 'workingDays',
+        Cell: ({ value }) => {
+          const formattedWorkingDays = value?.map(
+            (item) => WorkingDays[item.day]
           );
-        })}
-      </tbody>
-    </table>
-    // data
+          return <>{formattedWorkingDays.join(', ')}</>;
+        },
+      },
+      {
+        Header: 'ICU Specialist',
+        accessor: 'isIcuSpecialist',
+        Cell: ({ value }) => {
+          return <Badge value={value} />;
+        },
+      },
+      {
+        Header: 'Allergies',
+        accessor: 'allergies',
+        Cell: ({ value }) => {
+          const formattedAllergies =
+            value.length > 0
+              ? value?.map((item) => item.allergy.allergy).join(', ')
+              : '-';
+          return <>{formattedAllergies}</>;
+        },
+      },
+      {
+        Header: 'Start Time',
+        accessor: 'startTime',
+      },
+      {
+        Header: 'End Time',
+        accessor: 'endTime',
+      },
+      {
+        Header: 'Created Date',
+        accessor: 'createdDate',
+      },
+      {
+        Header: 'Updated Date',
+        accessor: 'updatedDate',
+      },
+      {
+        Haeder: 'Actions',
+        accessor: 'id',
+        Cell: ({ value }) => {
+          return (
+            <>
+              <div className='btn-group'>
+                <button className='btn btn__iconOnly'>
+                  <MdEdit
+                    size={16}
+                    className='color-primary--base'
+                    onClick={() => updateForm(value)}
+                  />
+                </button>
+                <button className='btn btn__iconOnly'>
+                  <MdDelete
+                    size={16}
+                    className='color-danger--base'
+                    onClick={() => deletePractitioner(value)}
+                  />
+                </button>
+              </div>
+            </>
+          );
+        },
+      },
+    ],
+    []
   );
+  return <ReactTable data={data || []} columns={columns} />;
 };
 
 export default Table;

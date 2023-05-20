@@ -25,5 +25,5 @@ app.listen(5000, () => {
 });
 
 app.use('/users', userRouter);
-app.use('/practitioners', authenticateToken, practitionerRouter);
+app.use('/practitioners', practitionerRouter);
 app.use('/allergies', authenticateToken, allergyRoutes);

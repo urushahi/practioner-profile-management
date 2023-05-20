@@ -1,14 +1,17 @@
-import { getFormattedDate, getFormattedTimeOnly } from '../../utils/date';
+import { WorkingDays } from '../../constants/constants';
+import { getFormattedDate } from '../../utils/date';
 
 export default function fromJson(payload) {
   const {
-    practitioner_id: id,
+    id,
     first_name: firstName,
     last_name: lastName,
     email,
     contact,
     dob,
     working_days: workingDays,
+    is_ICU_Specialist: isIcuSpecialist,
+    allergies,
     start_time: startTime,
     end_time: endTime,
     created_date: createdDate,
@@ -20,11 +23,32 @@ export default function fromJson(payload) {
     lastName,
     email,
     contact,
-    dob: getFormattedDate(dob),
-    workingDays,
-    startTime: getFormattedTimeOnly(startTime),
-    endTime: getFormattedTimeOnly(endTime),
+    dob,
+    isIcuSpecialist,
+    workingDays: mapArray(workingDays),
+    allergies: mapAllergiesArray(allergies),
+    startTime,
+    endTime,
     createdDate: getFormattedDate(createdDate),
     updatedDate: getFormattedDate(updatedDate),
   };
 }
+
+const mapArray = (data) => {
+  return data.map((item) => {
+    return {
+      value: item.day,
+      label: WorkingDays[item.day],
+    };
+  });
+};
+
+const mapAllergiesArray = (data) => {
+  return data.map((item) => {
+    const { allergy } = item;
+    return {
+      value: allergy.id,
+      label: allergy.allergy,
+    };
+  });
+};

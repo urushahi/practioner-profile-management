@@ -19,4 +19,27 @@
       background-color: lighten($primary, 60%);
     }
   }
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 0.875rem;
+  p {
+    font-size: 0.875rem;
+  }
+  .form-group__control {
+    width: 100px;
+    height: 30px;
+    font-size: 0.875rem;
+  }
+  input.form-group__control {
+    width: 68px;
+  }
 }
