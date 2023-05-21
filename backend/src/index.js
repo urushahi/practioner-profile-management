@@ -26,4 +26,4 @@ app.listen(5000, () => {
 
 app.use('/users', userRouter);
 app.use('/practitioners', practitionerRouter);
-app.use('/allergies', authenticateToken, allergyRoutes);
+app.use('/allergies', allergyRoutes);

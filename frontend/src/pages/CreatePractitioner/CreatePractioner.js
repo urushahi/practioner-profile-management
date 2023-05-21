@@ -49,6 +49,7 @@ const CreatePractioner = (props) => {
   } = useCreatePractitioners({
     initialValues: data ? data : initialValues,
     onSuccess: () => {
+      resetForm();
       dispatch(hideSideBarAction());
       queryClient.invalidateQueries('practitioners-list');
     },

@@ -7,8 +7,8 @@ const config = {
   endpoints: {
     users: {
       getAllUsers: '/users/',
-      signupUser: '/users/',
-      login: '/login',
+      signupUser: '/users/signup',
+      signin: '/users/signin',
     },
     practitioner: {
       getAllPractitioners: '/practitioners/',
@@ -19,6 +19,10 @@ const config = {
     },
     allergies: {
       getAllAllergies: '/allergies/',
+      createAllergy: '/allergies/',
+      getAllergyById: '/allergies/',
+      updateAllergyById: '/allergies/',
+      deleteAllergyById: '/allergies/',
     },
   },
 };

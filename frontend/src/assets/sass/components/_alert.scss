@@ -1,0 +1,10 @@
+.alert {
+  &--error {
+    background-color: rgba(getColor('danger.base'), 0.5);
+    color: white;
+    padding: 0.5rem;
+    text-align: center;
+    border-radius: 0.125rem 0.25rem;
+    font-size: 0.75rem;
+  }
+}
