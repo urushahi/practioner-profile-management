@@ -1,6 +1,7 @@
 import CreateAllergy from '../pages/Allergy/components/CreateAllergy';
 import CreatePractioner from '../pages/CreatePractitioner/CreatePractioner';
 import Header from './Header';
+import ModalComponent from './common/ModalComponent';
 
 const Layout = ({ children }) => {
   return (
@@ -12,6 +13,7 @@ const Layout = ({ children }) => {
         </div>
         <CreatePractioner />
         <CreateAllergy />
+        <ModalComponent />
       </div>
     </>
   );

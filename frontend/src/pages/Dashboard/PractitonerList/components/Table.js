@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { showSideBarAction } from '../../../../slices/ui/sidebarSlice';
@@ -6,17 +6,53 @@ import { WorkingDays } from '../../../../constants/constants';
 import Badge from '../../../../components/common/Badge';
 import { deletePractitionerById } from '../../../../services/practitioners';
 import ReactTable from '../../../../components/common/ReactTable/ReactTable';
+import {
+  hideModalAction,
+  showModalAction,
+} from '../../../../slices/ui/modalSlice';
+import { useQueryClient } from 'react-query';
 
 const Table = (props) => {
   const { data } = props;
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   const updateForm = (id) => {
-    disptach(showSideBarAction({ id: id, title: 'Update Practitioner' }));
+    dispatch(showSideBarAction({ id: id, title: 'Update Practitioner' }));
   };
 
   const deletePractitioner = (id) => {
-    deletePractitionerById(id);
+    const deleteModal = (
+      <>
+        <p className='modal__content'>
+          Are you sure you want to delete practitioner?
+        </p>
+        <div className='btn-group justify-content-end'>
+          <button
+            className='btn btn-secondary--outlined'
+            onClick={async () => {
+              dispatch(hideModalAction());
+              await deletePractitionerById(id);
+              queryClient.invalidateQueries('practitioners-list');
+            }}
+          >
+            Confirm
+          </button>
+          <button
+            className='btn btn-danger'
+            onClick={() => dispatch(hideModalAction())}
+          >
+            Cancel
+          </button>
+        </div>
+      </>
+    );
+    dispatch(
+      showModalAction({
+        title: 'Confirm Delete',
+        content: deleteModal,
+      })
+    );
   };
 
   const columns = useMemo(

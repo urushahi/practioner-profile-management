@@ -106,8 +106,9 @@
 
   //For Outline Buttons
   .btn-#{$theme-color}--outlined {
-    border-color: $color;
+    border: 1px solid $color;
     color: $color;
+    background-color: transparent;
 
     &:hover {
       background-color: $color;
