@@ -60,11 +60,11 @@ export const useLogin = (props) => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema: createLoginSchema,
     onSubmit: (values) => {
       mutation.mutate(values);
     },
     ...defaultConfig,
+    validationSchema: createLoginSchema,
     displayName: 'Get Users',
   });
   return {

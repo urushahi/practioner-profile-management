@@ -1,3 +1,4 @@
+import CreateAllergy from '../pages/Allergy/components/CreateAllergy';
 import CreatePractioner from '../pages/CreatePractitioner/CreatePractioner';
 import Header from './Header';
 
@@ -10,6 +11,7 @@ const Layout = ({ children }) => {
           <div className='container'>{children}</div>
         </div>
         <CreatePractioner />
+        <CreateAllergy />
       </div>
     </>
   );

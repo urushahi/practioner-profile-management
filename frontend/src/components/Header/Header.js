@@ -19,6 +19,9 @@ const Header = () => {
             <li>
               <NavLink to={routes.DASHBOARD}>Practitioner</NavLink>
             </li>
+            <li>
+              <NavLink to={routes.ALLERGY}>Allergy</NavLink>
+            </li>
           </ul>
         </div>
         <div className='header__dashboard--right'>

@@ -16,3 +16,11 @@
   font-size: 1.5rem;
   font-weight: 500;
 }
+.link {
+  &-white {
+    color: white;
+    &:hover {
+      color: getColor('grey.3');
+    }
+  }
+}

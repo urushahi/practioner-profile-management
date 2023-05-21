@@ -106,16 +106,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: getColor('primary.base');
+    // background: linear-gradient(90deg, #d87492 0%, #551a75 100%);
+    background: linear-gradient(180deg, #1333b1 0%, #331b50 100%);
+    color: white;
   }
   &-form {
     min-width: 400px;
-    background: white;
     padding: 1.5rem;
-    border-radius: 4px;
-    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
-      0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
-      0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05),
-      0 100px 80px rgba(0, 0, 0, 0.07);
+    background: rgba(50, 171, 211, 0.19);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(14.4px);
+    -webkit-backdrop-filter: blur(14.4px);
+    border: 1px solid rgba(50, 171, 211, 0.25);
+    .form-group__label {
+      color: white;
+    }
   }
 }

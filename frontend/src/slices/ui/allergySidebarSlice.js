@@ -8,8 +8,8 @@ const INITIAL_STATE = {
     title: '',
   },
 };
-const sidebarSlice = createSlice({
-  name: 'sidebarSlice',
+const allergySidebarSlice = createSlice({
+  name: 'allergySidebarSlice',
   initialState: INITIAL_STATE,
   reducers: {
     showSideBarAction: (state, action) => {
@@ -19,12 +19,13 @@ const sidebarSlice = createSlice({
     },
     hideSideBarAction: (state) => {
       state.sidebar.show = false;
+      state.sidebar.id = null;
       state.sidebar.title = '';
     },
   },
 });
 
-const { actions, reducer } = sidebarSlice;
+const { actions, reducer } = allergySidebarSlice;
 
 export const { showSideBarAction, hideSideBarAction, toggleSideBarAction } =
   actions;

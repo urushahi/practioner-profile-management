@@ -11,7 +11,7 @@ import { createPractitionerSchema } from '../../schemas/practitioners';
 
 const defaultConfig = {
   validateOnBlur: true,
-  // // validateOnMount: true,
+  // validateOnMount: true,
   validateOnChange: true,
   enableReinitialize: true,
   dirty: false,
@@ -24,7 +24,7 @@ export const usePractitioners = () => {
   };
 };
 
-export function useCreatePractitioners(props) {
+export const useCreatePractitioners = (props) => {
   const { initialValues, onSuccess, onError, id } = props;
 
   const mutation = useMutation(
@@ -57,7 +57,7 @@ export function useCreatePractitioners(props) {
     ...formik,
     ...mutation,
   };
-}
+};
 
 export const usePractitionersById = (id) => {
   const queryKey = ['practitioners-list-byId', id];

@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import InputComponent from '../../components/common/InputComponent';
-import { useLogin } from '../../hooks/query/useAuth';
+import { useSignUp } from '../../hooks/query/useAuth';
+import { routes } from '../../constants/routes';
 
 const initialValues = {
   name: '',
@@ -16,10 +17,10 @@ const Signup = () => {
   const togglePasswordIcon = () => setPasswordIcon(!passwordIcon);
   const navigate = useNavigate();
 
-  const { values, handleChange, errors, handleSubmit } = useLogin({
+  const { values, handleChange, errors, handleSubmit } = useSignUp({
     initialValues,
     onSuccess: () => {
-      navigate('/login');
+      navigate(routes.LOGIN);
     },
   });
   return (
@@ -38,6 +39,7 @@ const Signup = () => {
 
           <InputComponent
             name={'email'}
+            isRequired={true}
             labelText={'Email'}
             onChange={handleChange}
             placeholder={'e.g. someone@mail.com'}
@@ -48,6 +50,7 @@ const Signup = () => {
 
           <InputComponent
             name={'password]'}
+            isRequired={true}
             labelText={'Password'}
             type={`${passwordIcon ? 'password' : 'text'}`}
             onChange={handleChange}
@@ -65,6 +68,7 @@ const Signup = () => {
           />
           <InputComponent
             name={'repeatPassword]'}
+            isRequired={true}
             labelText={'Repeat Password'}
             type={`${passwordIcon ? 'password' : 'text'}`}
             onChange={handleChange}
@@ -82,8 +86,11 @@ const Signup = () => {
           <button type='submit' className='btn btn-secondary btn--block'>
             Sign Up
           </button>
-          <p className='message text-center mt-3x'>
-            Already have an account? <Link to='/login'>Login</Link>
+          <p className=' text-center mt-3x'>
+            Already have an account ?
+            <Link to='/login' className='link-white  ml-2x'>
+              Login
+            </Link>
           </p>
         </form>
       </div>
