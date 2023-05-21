@@ -1,0 +1,15 @@
+.modal {
+  border-radius: 0.25rem;
+  padding: 1rem;
+  @include e(header) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem;
+    font-weight: 500;
+    color: getColor('grey.4');
+  }
+  @include e(content) {
+    margin: 1rem 0;
+  }
+}

@@ -4,18 +4,59 @@ import { useDispatch } from 'react-redux';
 import ReactTable from '../../../components/common/ReactTable';
 import { showSideBarAction } from '../../../slices/ui/allergySidebarSlice';
 import { deleteAllergyById } from '../../../services/allergies';
+import { useQueryClient } from 'react-query';
+import {
+  hideModalAction,
+  showModalAction,
+} from '../../../slices/ui/modalSlice';
 
 const Table = (props) => {
   const { data } = props;
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   const updateForm = (value) => {
-    disptach(showSideBarAction({ id: value, title: 'Update Allergy' }));
+    dispatch(showSideBarAction({ id: value, title: 'Update Allergy' }));
   };
 
+  // const deleteAllergy = (id) => {
+  //   deleteAllergyById(id);
+  // };
+
   const deleteAllergy = (id) => {
-    deleteAllergyById(id);
+    const deleteModal = (
+      <>
+        <p className='modal__content'>
+          Are you sure you want to delete Allergy?
+        </p>
+        <div className='btn-group justify-content-end'>
+          <button
+            className='btn btn-secondary--outlined'
+            onClick={async () => {
+              dispatch(hideModalAction());
+              await deleteAllergyById(id);
+              queryClient.invalidateQueries('allergies-list');
+            }}
+          >
+            Confirm
+          </button>
+          <button
+            className='btn btn-danger'
+            onClick={() => dispatch(hideModalAction())}
+          >
+            Cancel
+          </button>
+        </div>
+      </>
+    );
+    dispatch(
+      showModalAction({
+        title: 'Confirm Delete',
+        content: deleteModal,
+      })
+    );
   };
+
   const columns = useMemo(
     () => [
       {
