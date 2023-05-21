@@ -1,26 +1,22 @@
 import React from 'react';
 
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import Layout from '../components/Layout';
 
-// import { getAccessToken } from "services/token";
+import { getAccessToken } from '../services/token';
+import { routes } from '../constants/routes';
 
 const PrivateRoute = () => {
-  //   const isLoggedIn = getAccessToken();
-  //   const dispatch = useDispatch();
-  //   const { pathname } = useLocation();
+  const isLoggedIn = getAccessToken();
+  const { pathname } = useLocation();
 
-  //   useEffect(() => {
-  //     if (pathname) dispatch(setCurrentRoute(pathname));
-  //   }, [pathname]);
-
-  //   if (!isLoggedIn) {
-  //     return <Navigate to={routes.LOGIN} />;
-  //   }
-  //   if (pathname === routes.PRIVATE_ROUTE) {
-  //     return <Navigate to={routes.DASHBOARD} />;
-  //   }
+  if (!isLoggedIn) {
+    return <Navigate to={routes.LOGIN} />;
+  }
+  if (pathname === routes.PRIVATE_ROUTE) {
+    return <Navigate to={routes.DASHBOARD} />;
+  }
   return (
     <Layout>
       <Outlet />

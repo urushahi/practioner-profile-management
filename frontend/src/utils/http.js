@@ -2,12 +2,12 @@ import axios from 'axios';
 import config from '../config';
 // import { BrowserRoutes as history } from '../routes/routes';
 
-// import * as tokenService from 'services/token';
+import * as tokenService from '../services/token';
 
 // import { REQUEST_TIMEOUT } from 'constants/errors';
-// import { routes } from '../constants/routes';
+// import { routes } from '../routes';
 
-// const AUTHORIZATION_HEADER = 'Authorization';
+const AUTHORIZATION_HEADER = 'Authorization';
 
 /**
  * Build authorization header
@@ -34,20 +34,20 @@ const http = axios.create({
  * Interceptor to add authentication header for all requests.
  *
  */
-// http.interceptors.request.use(
-//   (request) => {
-//     // const accessToken = tokenService.getAccessToken();
+http.interceptors.request.use(
+  (request) => {
+    const accessToken = tokenService.getAccessToken();
 
-//     // if (accessToken) {
-//     //   request.headers[AUTHORIZATION_HEADER] = buildAuthHeader(accessToken);
-//     // }
+    if (accessToken) {
+      request.headers[AUTHORIZATION_HEADER] = buildAuthHeader(accessToken);
+    }
 
-//     return request;
-//   },
-//   (requestError) => {
-//     throw requestError;
-//   }
-// );
+    return request;
+  },
+  (requestError) => {
+    throw requestError;
+  }
+);
 
 // http.interceptors.response.use(
 //   (response) => response,

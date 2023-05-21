@@ -32,7 +32,7 @@ export const useCreateAllergy = (props) => {
 
     {
       onSuccess: () => {
-        onSuccess();
+        onSuccess(id);
       },
       onError: (error) => {
         const errors = error?.response?.data?.errors || {};
@@ -61,7 +61,9 @@ export const useCreateAllergy = (props) => {
 
 export const useAllergyById = (id) => {
   const queryKey = ['allergy-byId', id];
-  const query = useQuery(queryKey, () => getAllergyById(id));
+  const query = useQuery(queryKey, () => getAllergyById(id), {
+    enabled: id !== null && id !== undefined,
+  });
   return {
     ...query,
   };

@@ -29,5 +29,5 @@ export default function toJson(payload) {
 }
 
 const mapArray = (data) => {
-  return data.map((item) => item.value);
+  return data?.map((item) => item.value);
 };

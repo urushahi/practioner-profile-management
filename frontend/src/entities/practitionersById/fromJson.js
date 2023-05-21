@@ -35,7 +35,7 @@ export default function fromJson(payload) {
 }
 
 const mapArray = (data) => {
-  return data.map((item) => {
+  return data?.map((item) => {
     return {
       value: item.day,
       label: WorkingDays[item.day],
@@ -44,7 +44,7 @@ const mapArray = (data) => {
 };
 
 const mapAllergiesArray = (data) => {
-  return data.map((item) => {
+  return data?.map((item) => {
     const { allergy } = item;
     return {
       value: allergy.id,

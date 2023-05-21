@@ -19,7 +19,6 @@ export const createAllergies = async (payload) => {
 
 export const getAllergyById = async (id) => {
   const url = config.endpoints.allergies.getAllergyById + id;
-  console.log(url);
   const { data } = await http.get(url);
   return allergyById.fromJson(data.data);
 };
@@ -28,7 +27,6 @@ export const updateAllergyById = async (payload) => {
   const { id } = payload;
   const url = config.endpoints.allergies.updateAllergyById + id;
   const formattedPayload = createAllergy.toJson(payload);
-  console.log(formattedPayload);
   return await http.put(url, formattedPayload);
 };
 
