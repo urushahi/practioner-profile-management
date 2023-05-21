@@ -9,6 +9,7 @@ import {
   hideModalAction,
   showModalAction,
 } from '../../../slices/ui/modalSlice';
+import * as toast from '../../../utils/toast';
 
 const Table = (props) => {
   const { data } = props;
@@ -18,10 +19,6 @@ const Table = (props) => {
   const updateForm = (value) => {
     dispatch(showSideBarAction({ id: value, title: 'Update Allergy' }));
   };
-
-  // const deleteAllergy = (id) => {
-  //   deleteAllergyById(id);
-  // };
 
   const deleteAllergy = (id) => {
     const deleteModal = (
@@ -36,6 +33,10 @@ const Table = (props) => {
               dispatch(hideModalAction());
               await deleteAllergyById(id);
               queryClient.invalidateQueries('allergies-list');
+              toast.deleted({
+                title: 'Deleted',
+                message: 'Allergy deleted successfully',
+              });
             }}
           >
             Confirm

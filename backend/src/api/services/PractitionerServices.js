@@ -8,7 +8,10 @@ module.exports = {
       const data = prisma.practitioner.findMany({
         orderBy: [
           {
-            id: 'asc',
+            is_ICU_Specialist: 'desc',
+          },
+          {
+            first_name: 'asc',
           },
         ],
         include: {

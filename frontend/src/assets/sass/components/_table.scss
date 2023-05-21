@@ -9,10 +9,12 @@
     }
   }
   td,
-  th {
+  th,
+  p {
     padding: 0.75rem;
     text-align: left;
     white-space: nowrap;
+    font-size: 0.875rem;
   }
   tbody tr {
     &:hover {

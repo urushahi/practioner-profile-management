@@ -6,6 +6,7 @@ import Login from '../pages/Login/index';
 import { createBrowserRouter } from 'react-router-dom';
 import Signup from '../pages/Login/Signup';
 import Allery from '../pages/Allergy';
+import PractitionerDetail from '../pages/PractitionerDetail';
 
 export const BrowserRoutes = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const BrowserRoutes = createBrowserRouter([
       {
         path: routes.DASHBOARD,
         element: <PractionerList />,
+      },
+      {
+        path: routes.PRACTITIONER_DETAIL,
+        element: <PractitionerDetail />,
       },
       {
         path: routes.ALLERGY,

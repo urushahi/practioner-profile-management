@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
       <div className='d-flex flex-column h-100'>
         <Header />
         <div className='main flex-grow'>
-          <div className='container'>{children}</div>
+          <div className='wrapper'>{children}</div>
         </div>
         <CreatePractioner />
         <CreateAllergy />
