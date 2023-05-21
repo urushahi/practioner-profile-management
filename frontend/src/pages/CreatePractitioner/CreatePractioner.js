@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import InputComponent from '../../components/common/InputComponent';
 import {
   useCreatePractitioners,
@@ -13,6 +13,7 @@ import { useAllergies } from '../../hooks/query/useAllergies';
 import ReactSelect from '../../components/common/ReactSelect/ReactSelect';
 import { WorkingDays } from '../../constants/constants';
 import InputCheckbox from '../../components/common/InputCheckbox';
+import * as toast from '../../utils/toast';
 
 const initialValues = {
   firstName: '',
@@ -48,8 +49,14 @@ const CreatePractioner = (props) => {
     handleBlur,
   } = useCreatePractitioners({
     initialValues: data ? data : initialValues,
-    onSuccess: () => {
+    onSuccess: (id) => {
       resetForm();
+      toast.success({
+        title: 'Success',
+        message: id
+          ? 'Practitioner updated successfully'
+          : 'Practitioner created successfully',
+      });
       dispatch(hideSideBarAction());
       queryClient.invalidateQueries('practitioners-list');
     },

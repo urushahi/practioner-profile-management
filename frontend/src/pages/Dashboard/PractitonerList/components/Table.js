@@ -28,12 +28,8 @@ const Table = (props) => {
         },
       },
       {
-        Header: 'First Name',
-        accessor: 'firstName',
-      },
-      {
-        Header: 'Last Name',
-        accessor: 'lastName',
+        Header: 'Name',
+        accessor: 'name',
       },
       {
         Header: 'Email',

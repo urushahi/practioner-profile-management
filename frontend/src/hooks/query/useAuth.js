@@ -3,6 +3,7 @@ import { useMutation } from 'react-query';
 import { useFormik } from 'formik';
 import { login, signup } from '../../services/auth';
 import { createLoginSchema, createUsersSchema } from '../../schemas/users';
+import * as tokenService from '../../services/token';
 
 const defaultConfig = {
   validateOnBlur: true,
@@ -46,8 +47,8 @@ export function useSignUp(props) {
 export const useLogin = (props) => {
   const { initialValues, onSuccess, onError } = props;
   const mutation = useMutation(login, {
-    onSuccess: () => {
-      onSuccess();
+    onSuccess: (response) => {
+      onSuccess(response.data.data);
     },
     onError: (error) => {
       const errors = error?.response?.data?.errors || {};
@@ -71,4 +72,12 @@ export const useLogin = (props) => {
     ...formik,
     ...mutation,
   };
+};
+
+export const loginAction = (response) => {
+  const { access_token } = response;
+
+  tokenService.persist({
+    accessToken: access_token,
+  });
 };

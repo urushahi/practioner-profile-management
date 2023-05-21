@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import InputComponent from '../../../components/common/InputComponent';
 import { useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,8 @@ import {
   useAllergyById,
   useCreateAllergy,
 } from '../../../hooks/query/useAllergies';
+
+import * as toast from '../../../utils/toast';
 
 const initialValues = {
   allergy: '',
@@ -24,9 +26,15 @@ const CreateAllergy = (props) => {
 
   const { values, handleChange, errors, handleSubmit, resetForm, handleBlur } =
     useCreateAllergy({
-      initialValues: data ? data : initialValues,
+      initialValues: data ? { ...data } : { ...initialValues }, // Update the initialValues here
       onSuccess: () => {
-        resetForm({ values: '' });
+        resetForm();
+        toast.success({
+          title: 'Success',
+          message: id
+            ? 'Allergy updated successfully'
+            : 'Allergy created successfully',
+        });
         dispatch(hideSideBarAction());
         queryClient.invalidateQueries('allergies-list');
       },
@@ -63,7 +71,7 @@ const CreateAllergy = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder={'Enter Allergy name'}
-              value={values.allergy}
+              value={values.allergy || ''}
               errorMessage={errors.allergy}
               isRequired={true}
             />

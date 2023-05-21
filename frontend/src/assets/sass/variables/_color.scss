@@ -2,7 +2,7 @@
 $white: #ffffff !default;
 $black: #000000 !default;
 
-$primary: #194e8f !default;
+$primary: #307694 !default;
 $secondary: #198f19 !default;
 $success: #198f19 !default;
 
@@ -47,6 +47,11 @@ $colorMap: (
     '4': #333333,
     '5': rgba($black, 0.2),
     '6': rgba($black, 0.6),
+    '7': #706f6f,
+  ),
+  'blue': (
+    'base': $primary,
+    '1': #307694,
   ),
 );
 

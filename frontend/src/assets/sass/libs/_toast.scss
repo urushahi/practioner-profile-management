@@ -1,0 +1,62 @@
+.iziToast-capsule {
+  .custom {
+    &-toast {
+      font-family: $font-primary;
+      position: relative;
+      background-color: white !important;
+      border-radius: 8px !important ;
+      padding: 1rem 5.25rem 1rem 0;
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: getColor('primary.base');
+        height: 100%;
+        width: 2px;
+      }
+      &:after {
+        box-shadow: none;
+        box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      > .iziToast-body {
+        padding-left: 44px !important;
+        margin-left: 0.5rem;
+        .iziToast-texts {
+          margin-top: 0;
+        }
+        .iziToast-title {
+          font-size: 1rem;
+          color: getColor('primary.base');
+          display: block;
+          float: unset;
+          margin-bottom: 0.25rem;
+        }
+        .iziToast-message {
+          color: getColor('grey.4');
+          margin: 0;
+        }
+        .iziToast-icon {
+          height: 32px;
+          width: 32px;
+          margin-top: 0;
+          transform: translateY(-50%);
+        }
+      }
+
+      &.iziToast-color-red {
+        &:before {
+          background-color: getColor('danger.base');
+        }
+        > .iziToast-body {
+          .iziToast-title {
+            font-size: 1rem;
+            color: getColor('danger.base');
+          }
+        }
+      }
+    }
+  }
+}

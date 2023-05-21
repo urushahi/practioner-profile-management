@@ -49,14 +49,16 @@ module.exports = {
         throw new Error('User not found');
       }
 
-      const { password: cryptedPassword, id } = userData;
+      const { password: cryptedPassword, id, name } = userData;
       await checkPassword(cryptedPassword, password);
 
       const access_token = generateToken(id); // token provided for access
 
       return res
         .status(200)
-        .json(successResponse({ access_token }, 'Login successful'));
+        .json(
+          successResponse({ access_token, email, name }, 'Login successful')
+        );
     } catch (err) {
       console.log(err);
 

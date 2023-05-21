@@ -8,6 +8,7 @@ import {
 } from '../../services/practitioners';
 import { useFormik } from 'formik';
 import { createPractitionerSchema } from '../../schemas/practitioners';
+import { useEffect } from 'react';
 
 const defaultConfig = {
   validateOnBlur: true,
@@ -31,7 +32,7 @@ export const useCreatePractitioners = (props) => {
     id ? updatePractitionerById : createPractioners,
     {
       onSuccess: () => {
-        onSuccess();
+        onSuccess(id);
       },
       onError: (error) => {
         const errors = error?.response?.data?.errors || {};
@@ -61,7 +62,9 @@ export const useCreatePractitioners = (props) => {
 
 export const usePractitionersById = (id) => {
   const queryKey = ['practitioners-list-byId', id];
-  const query = useQuery(queryKey, () => getPractitionerById(id));
+  const query = useQuery(queryKey, () => getPractitionerById(id), {
+    enabled: id !== null && id !== undefined,
+  });
   return {
     ...query,
   };
