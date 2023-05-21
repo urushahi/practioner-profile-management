@@ -11,11 +11,20 @@ import {
   showModalAction,
 } from '../../../../slices/ui/modalSlice';
 import { useQueryClient } from 'react-query';
+import { BsEyeFill } from 'react-icons/bs';
+import { useNavigate } from 'react-router';
+import * as toast from '../../../../utils/toast';
 
 const Table = (props) => {
   const { data } = props;
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const viewDetail = (id) => {
+    console.log(id);
+    navigate(`/practitioner/${id}`);
+  };
 
   const updateForm = (id) => {
     dispatch(showSideBarAction({ id: id, title: 'Update Practitioner' }));
@@ -34,6 +43,10 @@ const Table = (props) => {
               dispatch(hideModalAction());
               await deletePractitionerById(id);
               queryClient.invalidateQueries('practitioners-list');
+              toast.deleted({
+                title: 'Deleted',
+                message: 'Practitioner deleted successfully',
+              });
             }}
           >
             Confirm
@@ -76,8 +89,13 @@ const Table = (props) => {
         accessor: 'contact',
       },
       {
-        Header: 'Date of Birth',
+        Header: () => {
+          return <p className='font-14 text-right w--100'> Date of Birth</p>;
+        },
         accessor: 'dob',
+        Cell: ({ value }) => {
+          return <p className='font-14 text-right w--100'>{value}</p>;
+        },
       },
       {
         Header: 'Working days',
@@ -107,22 +125,22 @@ const Table = (props) => {
           return <>{formattedAllergies}</>;
         },
       },
-      {
-        Header: 'Start Time',
-        accessor: 'startTime',
-      },
-      {
-        Header: 'End Time',
-        accessor: 'endTime',
-      },
-      {
-        Header: 'Created Date',
-        accessor: 'createdDate',
-      },
-      {
-        Header: 'Updated Date',
-        accessor: 'updatedDate',
-      },
+      // {
+      //   Header: 'Start Time',
+      //   accessor: 'startTime',
+      // },
+      // {
+      //   Header: 'End Time',
+      //   accessor: 'endTime',
+      // },
+      // {
+      //   Header: 'Created Date',
+      //   accessor: 'createdDate',
+      // },
+      // {
+      //   Header: 'Updated Date',
+      //   accessor: 'updatedDate',
+      // },
       {
         Haeder: 'Actions',
         accessor: 'id',
@@ -130,6 +148,13 @@ const Table = (props) => {
           return (
             <>
               <div className='btn-group'>
+                <button className='btn btn__iconOnly'>
+                  <BsEyeFill
+                    size={16}
+                    className='color-blue--1'
+                    onClick={() => viewDetail(value)}
+                  />
+                </button>
                 <button className='btn btn__iconOnly'>
                   <MdEdit
                     size={16}

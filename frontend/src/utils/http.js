@@ -1,11 +1,7 @@
 import axios from 'axios';
 import config from '../config';
-// import { BrowserRoutes as history } from '../routes/routes';
 
 import * as tokenService from '../services/token';
-
-// import { REQUEST_TIMEOUT } from 'constants/errors';
-// import { routes } from '../routes';
 
 const AUTHORIZATION_HEADER = 'Authorization';
 

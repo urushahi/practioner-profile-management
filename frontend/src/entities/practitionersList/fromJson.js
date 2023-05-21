@@ -28,7 +28,7 @@ function mappedData(practitioner) {
     lastName,
     email,
     contact,
-    dob,
+    dob: getFormattedDate(dob),
     isIcuSpecialist,
     workingDays,
     allergies,
