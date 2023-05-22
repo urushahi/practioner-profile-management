@@ -22,7 +22,6 @@ const Table = (props) => {
   const navigate = useNavigate();
 
   const viewDetail = (id) => {
-    console.log(id);
     navigate(`/practitioner/${id}`);
   };
 
@@ -38,7 +37,7 @@ const Table = (props) => {
         </p>
         <div className='btn-group justify-content-end'>
           <button
-            className='btn btn-secondary--outlined'
+            className='btn btn-danger'
             onClick={async () => {
               dispatch(hideModalAction());
               await deletePractitionerById(id);
@@ -49,13 +48,7 @@ const Table = (props) => {
               });
             }}
           >
-            Confirm
-          </button>
-          <button
-            className='btn btn-danger'
-            onClick={() => dispatch(hideModalAction())}
-          >
-            Cancel
+            Delete
           </button>
         </div>
       </>
@@ -68,115 +61,112 @@ const Table = (props) => {
     );
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'S.N',
-        Cell: (value) => {
-          return <>{value.row.index + 1}</>;
-        },
+  const columns = useMemo(() => [
+    {
+      Header: 'S.N',
+      Cell: (value) => {
+        return <>{value.row.index + 1}</>;
       },
-      {
-        Header: 'Name',
-        accessor: 'name',
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
+    },
+    {
+      Header: 'Email',
+      accessor: 'email',
+    },
+    {
+      Header: 'Contact',
+      accessor: 'contact',
+    },
+    {
+      Header: () => {
+        return <p className='font-14 text-right w--100'> Date of Birth</p>;
       },
-      {
-        Header: 'Email',
-        accessor: 'email',
+      accessor: 'dob',
+      Cell: ({ value }) => {
+        return <p className='font-14 text-right w--100'>{value}</p>;
       },
-      {
-        Header: 'Contact',
-        accessor: 'contact',
+    },
+    {
+      Header: 'Working days',
+      accessor: 'workingDays',
+      Cell: ({ value }) => {
+        const formattedWorkingDays = value?.map(
+          (item) => WorkingDays[item.day]
+        );
+        return <>{formattedWorkingDays.join(', ')}</>;
       },
-      {
-        Header: () => {
-          return <p className='font-14 text-right w--100'> Date of Birth</p>;
-        },
-        accessor: 'dob',
-        Cell: ({ value }) => {
-          return <p className='font-14 text-right w--100'>{value}</p>;
-        },
+    },
+    {
+      Header: 'ICU Specialist',
+      accessor: 'isIcuSpecialist',
+      Cell: ({ value }) => {
+        return <Badge value={value} />;
       },
-      {
-        Header: 'Working days',
-        accessor: 'workingDays',
-        Cell: ({ value }) => {
-          const formattedWorkingDays = value?.map(
-            (item) => WorkingDays[item.day]
-          );
-          return <>{formattedWorkingDays.join(', ')}</>;
-        },
+    },
+    {
+      Header: 'Allergies',
+      accessor: 'allergies',
+      Cell: ({ value }) => {
+        const formattedAllergies =
+          value.length > 0
+            ? value?.map((item) => item.allergy.allergy).join(', ')
+            : '-';
+        return <>{formattedAllergies}</>;
       },
-      {
-        Header: 'ICU Specialist',
-        accessor: 'isIcuSpecialist',
-        Cell: ({ value }) => {
-          return <Badge value={value} />;
-        },
+    },
+    // {
+    //   Header: 'Start Time',
+    //   accessor: 'startTime',
+    // },
+    // {
+    //   Header: 'End Time',
+    //   accessor: 'endTime',
+    // },
+    // {
+    //   Header: 'Created Date',
+    //   accessor: 'createdDate',
+    // },
+    // {
+    //   Header: 'Updated Date',
+    //   accessor: 'updatedDate',
+    // },
+    {
+      Haeder: 'Actions',
+      accessor: 'id',
+      Cell: ({ value }) => {
+        return (
+          <>
+            <div className='btn-group'>
+              <button className='btn btn__iconOnly'>
+                <BsEyeFill
+                  size={16}
+                  className='color-blue--1'
+                  onClick={() => viewDetail(value)}
+                />
+              </button>
+              <button className='btn btn__iconOnly'>
+                <MdEdit
+                  size={16}
+                  className='color-primary--base'
+                  onClick={() => updateForm(value)}
+                />
+              </button>
+              <button className='btn btn__iconOnly'>
+                <MdDelete
+                  size={16}
+                  className='color-danger--base'
+                  onClick={() => deletePractitioner(value)}
+                />
+              </button>
+            </div>
+          </>
+        );
       },
-      {
-        Header: 'Allergies',
-        accessor: 'allergies',
-        Cell: ({ value }) => {
-          const formattedAllergies =
-            value.length > 0
-              ? value?.map((item) => item.allergy.allergy).join(', ')
-              : '-';
-          return <>{formattedAllergies}</>;
-        },
-      },
-      // {
-      //   Header: 'Start Time',
-      //   accessor: 'startTime',
-      // },
-      // {
-      //   Header: 'End Time',
-      //   accessor: 'endTime',
-      // },
-      // {
-      //   Header: 'Created Date',
-      //   accessor: 'createdDate',
-      // },
-      // {
-      //   Header: 'Updated Date',
-      //   accessor: 'updatedDate',
-      // },
-      {
-        Haeder: 'Actions',
-        accessor: 'id',
-        Cell: ({ value }) => {
-          return (
-            <>
-              <div className='btn-group'>
-                <button className='btn btn__iconOnly'>
-                  <BsEyeFill
-                    size={16}
-                    className='color-blue--1'
-                    onClick={() => viewDetail(value)}
-                  />
-                </button>
-                <button className='btn btn__iconOnly'>
-                  <MdEdit
-                    size={16}
-                    className='color-primary--base'
-                    onClick={() => updateForm(value)}
-                  />
-                </button>
-                <button className='btn btn__iconOnly'>
-                  <MdDelete
-                    size={16}
-                    className='color-danger--base'
-                    onClick={() => deletePractitioner(value)}
-                  />
-                </button>
-              </div>
-            </>
-          );
-        },
-      },
-    ],
-    []
-  );
+    },
+  ]);
   return <ReactTable data={data || []} columns={columns} />;
 };
 

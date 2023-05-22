@@ -5,11 +5,11 @@ import { routes } from '../../constants/routes';
 import { logout } from '../../services/auth';
 import { FaRegUser } from 'react-icons/fa';
 import { MdLogout } from 'react-icons/md';
-import { useSelector } from 'react-redux';
+import * as tokenService from '../../services/token';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { name } = useSelector((state) => state.data.auth);
+  const { name } = tokenService.getAuthDetail();
 
   const logoutUser = () => {
     logout();

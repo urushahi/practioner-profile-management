@@ -65,6 +65,11 @@
   @include m(sm) {
     padding: 0.25rem;
   }
+  @include m(textOnly) {
+    background: transparent;
+    color: getColor('grey.4');
+    border: 0;
+  }
 }
 
 .btn-outlined {
