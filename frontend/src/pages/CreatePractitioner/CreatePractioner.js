@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputComponent from '../../components/common/InputComponent';
 import {
   useCreatePractitioners,
@@ -14,6 +14,8 @@ import ReactSelect from '../../components/common/ReactSelect/ReactSelect';
 import { WorkingDays } from '../../constants/constants';
 import InputCheckbox from '../../components/common/InputCheckbox';
 import * as toast from '../../utils/toast';
+import Dropzone from 'react-dropzone';
+import ImageDropzone from '../../components/common/ImageDropzone';
 
 const initialValues = {
   firstName: '',
@@ -24,6 +26,7 @@ const initialValues = {
   workingDays: [],
   startTime: '',
   endTime: '',
+  image: '',
   isIcuSpecialist: false,
   allergies: [],
 };
@@ -64,6 +67,7 @@ const CreatePractioner = (props) => {
     id,
   });
 
+  console.log(values.image);
   const workingDaysOptions = Object.keys(WorkingDays).map((key) => ({
     value: parseInt(key),
     label: WorkingDays[key],
@@ -77,6 +81,9 @@ const CreatePractioner = (props) => {
   const errorHandler = (inputId) => {
     return errors?.[inputId] && touched?.[inputId] ? errors?.[inputId] : '';
   };
+
+  console.log(values);
+
   return (
     <div className={classNames({ show: show }, 'sideForm-wrapper', className)}>
       <div className='sideForm'>
@@ -98,6 +105,27 @@ const CreatePractioner = (props) => {
                 disabled={true}
               />
             )}
+            {/* <ImageDropzone
+              id={'image'}
+              name={'image'}
+              onChange={handleChange}
+              value={values.image}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+            /> */}
+
+            <InputComponent
+              id={'image'}
+              name={'image'}
+              labelText={'Image'}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder={'Enter First name'}
+              value={values.image}
+              errorMessage={errorHandler('image')}
+              isRequired={true}
+              type={'file'}
+            />
             <InputComponent
               id={'firstName'}
               name={'firstName'}

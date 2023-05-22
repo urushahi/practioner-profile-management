@@ -47,6 +47,7 @@ export const useCreatePractitioners = (props) => {
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
+      console.log(values);
       mutation.mutate(values);
     },
     ...defaultConfig, // Add your desired configuration options for useFormik here
