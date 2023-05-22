@@ -29,6 +29,25 @@ export function setAccessToken(accessToken) {
 }
 
 /**
+ * Get Auth Detail from storage.
+ *
+ * @returns {string}
+ */
+export function getAuthDetail() {
+  return storage.get('Auth-Detail');
+}
+
+/**
+ * Set Auth Detail to storage.
+ *
+ * @param {string} AuthDetail
+ * @returns {string}
+ */
+export function setAuthDetail(AuthDetail) {
+  return storage.set('Auth-Detail', AuthDetail);
+}
+
+/**
  * Get refresh token from storage.
  *
  * @returns {string}

@@ -18,19 +18,28 @@ export const createPractioners = async (payload) => {
 };
 
 export const getPractitionerById = async (id) => {
-  const url = config.endpoints.practitioner.getPractitionersById + id;
+  const url = config.endpoints.practitioner.getPractitionersById.replace(
+    ':id',
+    id
+  );
   const { data } = await http.get(url);
   return getPractitionersById.fromJson(data.data);
 };
 
 export const updatePractitionerById = async (payload) => {
   const { id } = payload;
-  const url = config.endpoints.practitioner.updatePractitionersById + id;
+  const url = config.endpoints.practitioner.updatePractitionersById.replace(
+    ':id',
+    id
+  );
   const formattedPayload = createPractitioner.toJson(payload);
   return await http.put(url, formattedPayload);
 };
 
 export const deletePractitionerById = async (id) => {
-  const url = config.endpoints.practitioner.deletePractitionersById + id;
+  const url = config.endpoints.practitioner.deletePractitionersById.replace(
+    ':id',
+    id
+  );
   return await http.delete(url);
 };

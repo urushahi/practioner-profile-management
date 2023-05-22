@@ -1,11 +1,4 @@
-const {
-  getUsers,
-  createUser,
-  getUsersById,
-  updateUserById,
-  deleteUserById,
-  checkUser,
-} = require('../services/UserServices');
+const { createUser, checkUser } = require('../services/UserServices');
 
 const {
   validationFailedResponse,
@@ -60,8 +53,6 @@ module.exports = {
           successResponse({ access_token, email, name }, 'Login successful')
         );
     } catch (err) {
-      console.log(err);
-
       if (err.message === 'Validation Failed') {
         return res.status(422).json(validationFailedResponse(err.errors));
       }

@@ -13,16 +13,16 @@ const config = {
     practitioner: {
       getAllPractitioners: '/practitioners/',
       createPractitioner: '/practitioners/',
-      getPractitionersById: '/practitioners/',
-      updatePractitionersById: '/practitioners/',
-      deletePractitionersById: '/practitioners/',
+      getPractitionersById: '/practitioners/:id',
+      updatePractitionersById: '/practitioners/:id',
+      deletePractitionersById: '/practitioners/:id',
     },
     allergies: {
       getAllAllergies: '/allergies/',
       createAllergy: '/allergies/',
-      getAllergyById: '/allergies/',
-      updateAllergyById: '/allergies/',
-      deleteAllergyById: '/allergies/',
+      getAllergyById: '/allergies/:id',
+      updateAllergyById: '/allergies/:id',
+      deleteAllergyById: '/allergies/:id',
     },
   },
 };

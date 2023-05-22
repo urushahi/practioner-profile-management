@@ -23,7 +23,7 @@ export default function fromJson(payload) {
     lastName,
     email,
     contact,
-    dob,
+    dob: getFormattedDate(dob),
     isIcuSpecialist,
     workingDays: mapArray(workingDays),
     allergies: mapAllergiesArray(allergies),

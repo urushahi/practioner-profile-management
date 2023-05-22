@@ -47,6 +47,7 @@ const CreatePractioner = (props) => {
     setFieldValue,
     resetForm,
     handleBlur,
+    touched,
   } = useCreatePractitioners({
     initialValues: data ? data : initialValues,
     onSuccess: (id) => {
@@ -72,6 +73,10 @@ const CreatePractioner = (props) => {
     dispatch(hideSideBarAction());
     resetForm();
   };
+
+  const errorHandler = (inputId) => {
+    return errors?.[inputId] && touched?.[inputId] ? errors?.[inputId] : '';
+  };
   return (
     <div className={classNames({ show: show }, 'sideForm-wrapper', className)}>
       <div className='sideForm'>
@@ -94,56 +99,61 @@ const CreatePractioner = (props) => {
               />
             )}
             <InputComponent
+              id={'firstName'}
               name={'firstName'}
               labelText={'First Name'}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder={'Enter First name'}
               value={values.firstName}
-              errorMessage={errors.firstName}
+              errorMessage={errorHandler('firstName')}
               isRequired={true}
             />
             <InputComponent
               name={'lastName'}
+              id={'lastName'}
               labelText={'Last Name'}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder={'Enter Last name'}
               value={values.lastName}
-              errorMessage={errors.lastName}
+              errorMessage={errorHandler('lastName')}
               isRequired={true}
             />
             <InputComponent
               name={'email'}
+              id={'email'}
               type='email'
               labelText={'Email'}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder={'someone@mail.com'}
               value={values.email}
-              errorMessage={errors.email}
               disabled={id}
               isRequired={true}
+              errorMessage={errorHandler('email')}
             />
             <InputComponent
               name={'contact'}
+              id={'contact'}
               labelText={'Contact'}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder={'example : 9841234567'}
               value={values.contact}
-              errorMessage={errors.contact}
               isRequired={true}
+              errorMessage={errorHandler('contact')}
             />
             <InputComponent
               name={'dob'}
+              id={'dob'}
               labelText={'Date of Birth'}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder={'1999-01-01'}
               value={values.dob}
               type='date'
-              errorMessage={errors.dob}
+              errorMessage={errorHandler('dob')}
               isRequired={true}
             />
             <ReactSelect
@@ -155,30 +165,32 @@ const CreatePractioner = (props) => {
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
               selectedOption={values?.['workingDays'] || []}
-              errorMessage={errors.workingDays}
               isRequired={true}
+              errorMessage={errorHandler('workingDays')}
             />
 
             <InputComponent
               name={'startTime'}
+              id={'startTime'}
               labelText={'Start Time'}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder={'1999-01-01'}
               value={values.startTime}
               type='time'
-              errorMessage={errors.startTime}
+              errorMessage={errorHandler('startTime')}
               isRequired={true}
             />
             <InputComponent
               name={'endTime'}
+              id={'endTime'}
               labelText={'End Time'}
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder={'1999-01-01'}
               value={values.endTime}
               type='time'
-              errorMessage={errors.endTime}
+              errorMessage={errorHandler('endTime')}
               isRequired={true}
             />
             <InputCheckbox
@@ -188,7 +200,6 @@ const CreatePractioner = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.isIcuSpecialist}
-              errorMessage={errors.endTime}
             />
             <ReactSelect
               id={'allergies'}
