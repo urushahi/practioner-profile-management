@@ -20,6 +20,44 @@ const authenticateToken = require('./api/middlewares/authenticate');
 app.use(cors());
 app.use(express.json());
 
+const cloudinary = require('cloudinary').v2;
+const multerUpload = require('./api/middlewares/multer');
+
+app.post('/upload', multerUpload, async (req, res) => {
+  try {
+    const { originalname, buffer } = req.file;
+
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload_stream(
+      {
+        folder: 'test', // Optional: specify a folder in Cloudinary
+        public_id: originalname, // Optional: use the original filename as the public ID
+      },
+      async (error, result) => {
+        if (error) {
+          console.log('Upload to Cloudinary failed:', error);
+          throw error;
+        }
+
+        // Save image details to the database
+        const image = await prisma.image.create({
+          data: {
+            filename: originalname,
+            url: result.secure_url,
+          },
+        });
+
+        res.status(200).json(image);
+      }
+    );
+
+    result.end(buffer);
+  } catch (error) {
+    console.error('Image upload failed:', error);
+    res.status(500).json({ error: 'Image upload failed' });
+  }
+});
+
 app.listen(5000, () => {
   console.log('server has started on port 5000');
 });

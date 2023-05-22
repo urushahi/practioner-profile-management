@@ -31,6 +31,7 @@ module.exports = {
 
   createPractitioner: async (data) => {
     const { working_days, allergies, ...payload } = data;
+    const { originalname, buffer } = data.file;
     try {
       const practitioner = await prisma.practitioner.findUnique({
         where: {
@@ -41,13 +42,49 @@ module.exports = {
       if (practitioner) {
         throw new Error('Email already exists');
       }
-      const createPractitioners = await prisma.practitioner.create({
-        data: payload,
-        include: {
-          working_days: true,
-          allergies: true,
+
+      // Upload image to Cloudinary
+      const result = await cloudinary.uploader.upload_stream(
+        {
+          folder: 'test', // Optional: specify a folder in Cloudinary
+          public_id: originalname, // Optional: use the original filename as the public ID
         },
-      });
+        async (error, result) => {
+          if (error) {
+            console.log('Upload to Cloudinary failed:', error);
+            throw error;
+          }
+
+          // Save image details to the database
+          // const image = await prisma.image.create({
+          //   data: {
+          //     filename: originalname,
+          //     url: result.secure_url,
+          //   },
+          // });
+          const createPractitioners = await prisma.practitioner.create({
+            data: {
+              // filename: originalname,
+              image: result.secure_url,
+              ...payload,
+            },
+            include: {
+              working_days: true,
+              allergies: true,
+            },
+          });
+
+          return createPractitioners;
+        }
+      );
+
+      // const createPractitioners = await prisma.practitioner.create({
+      //   data: payload,
+      //   include: {
+      //     working_days: true,
+      //     allergies: true,
+      //   },
+      // });
       await prisma.workingDay.createMany({
         data: working_days.map((day) => ({
           day,
@@ -64,7 +101,8 @@ module.exports = {
           })),
         });
       }
-      return createPractitioners;
+      // return createPractitioners;
+      return result;
     } catch (err) {
       throw err;
     }
