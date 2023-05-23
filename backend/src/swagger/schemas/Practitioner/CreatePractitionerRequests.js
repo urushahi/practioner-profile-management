@@ -21,6 +21,11 @@ module.exports = {
       type: 'string',
       description: 'DOB of practitioner',
     },
+    image: {
+      type: 'string',
+      format: 'binary',
+      description: 'Image of practitioner',
+    },
     start_time: {
       type: 'string',
       description: 'Working start time of practitioner',

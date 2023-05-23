@@ -25,7 +25,7 @@ module.exports = {
   createPractitioner: async (req, res) => {
     try {
       await validateCreatePractictioner(req.body);
-      const newPractitioner = await createPractitioner(req.body);
+      const newPractitioner = await createPractitioner(req);
       return res.status(200).json(successResponse(newPractitioner));
     } catch (err) {
       if (err.message === 'Validation Failed') {
