@@ -20,6 +20,7 @@ function mappedData(practitioner) {
     end_time: endTime,
     created_date: createdDate,
     updated_date: updatedDate,
+    image,
   } = practitioner;
   return {
     id,
@@ -31,6 +32,7 @@ function mappedData(practitioner) {
     dob: getFormattedDate(dob),
     isIcuSpecialist,
     workingDays,
+    image,
     allergies,
     startTime,
     endTime,

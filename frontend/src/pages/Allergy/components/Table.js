@@ -28,7 +28,7 @@ const Table = (props) => {
         </p>
         <div className='btn-group justify-content-end'>
           <button
-            className='btn btn-secondary--outlined'
+            className='btn btn-danger'
             onClick={async () => {
               dispatch(hideModalAction());
               await deleteAllergyById(id);
@@ -39,13 +39,7 @@ const Table = (props) => {
               });
             }}
           >
-            Confirm
-          </button>
-          <button
-            className='btn btn-danger'
-            onClick={() => dispatch(hideModalAction())}
-          >
-            Cancel
+            Delete
           </button>
         </div>
       </>

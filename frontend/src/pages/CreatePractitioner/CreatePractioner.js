@@ -19,6 +19,7 @@ const initialValues = {
   firstName: '',
   lastName: '',
   email: '',
+  image: '',
   contact: '',
   dob: '',
   workingDays: [],
@@ -86,7 +87,11 @@ const CreatePractioner = (props) => {
             <MdClose size='24' />
           </button>
         </div>
-        <form action='' onSubmit={handleSubmit} className=' mt-4x'>
+        <form
+          encType='multipart/formdata'
+          onSubmit={handleSubmit}
+          className=' mt-4x'
+        >
           <div>
             {id && (
               <InputComponent
@@ -98,6 +103,17 @@ const CreatePractioner = (props) => {
                 disabled={true}
               />
             )}
+            <InputComponent
+              name={'image'}
+              id={'image'}
+              labelText={'Image'}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.image}
+              errorMessage={errorHandler('image')}
+              setFieldValue={setFieldValue}
+              type='file'
+            />
             <InputComponent
               id={'firstName'}
               name={'firstName'}
@@ -144,6 +160,7 @@ const CreatePractioner = (props) => {
               isRequired={true}
               errorMessage={errorHandler('contact')}
             />
+
             <InputComponent
               name={'dob'}
               id={'dob'}

@@ -70,21 +70,6 @@ export const usePractitionersById = (id) => {
   };
 };
 
-// export const useDeletePractitionersById = async (id) => {
-//   const queryClient = useQueryClient();
-
-//   const queryKey = ['delete-practioners', id];
-//   const query = await useQuery(queryKey, () => getPractitionerById(id), {
-//     onSuccess: () => {
-//       console.log('working');
-//       queryClient.invalidateQueries('practitioners-list');
-//     },
-//   });
-//   return {
-//     ...query,
-//   };
-// };
-
 export const useDeletePractitionerById = async (props) => {
   const queryClient = useQueryClient();
   const { id, onSuccess, onError } = props;

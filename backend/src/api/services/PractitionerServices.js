@@ -30,7 +30,8 @@ module.exports = {
   },
 
   createPractitioner: async (data) => {
-    const { working_days, allergies, ...payload } = data.body;
+    const { working_days, allergies, is_ICU_Specialist, ...payload } =
+      data.body;
     const fileURL = data.fileURL;
     try {
       const practitioner = await prisma.practitioner.findUnique({
@@ -46,6 +47,7 @@ module.exports = {
       const createPractitioners = await prisma.practitioner.create({
         data: {
           image: fileURL,
+          is_ICU_Specialist: is_ICU_Specialist === 'true',
           ...payload,
         },
         include: {
@@ -110,7 +112,9 @@ module.exports = {
         throw new Error('Practitioner not found');
       }
 
-      const { working_days, allergies, ...payload } = data;
+      const { working_days, allergies, is_ICU_Specialist, ...payload } =
+        data.body;
+      const image = data.fileURL;
 
       const updatedPractitioner = await prisma.practitioner.update({
         where: {
@@ -119,12 +123,16 @@ module.exports = {
         data: {
           working_days: {
             deleteMany: {},
-            create: working_days.map((day) => ({ day })),
+            create: working_days.map((day) => ({ day: parseInt(day) })),
           },
           allergies: {
             deleteMany: {},
-            create: allergies.map((allergy) => ({ allergy_id: allergy })),
+            create: allergies?.map((allergy) => ({
+              allergy_id: parseInt(allergy),
+            })),
           },
+          image,
+          is_ICU_Specialist: is_ICU_Specialist === 'true',
           ...payload,
         },
         include: {
