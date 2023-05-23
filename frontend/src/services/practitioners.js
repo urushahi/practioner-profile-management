@@ -14,7 +14,10 @@ export const fetchAllPractitioners = async (payload = {}) => {
 export const createPractioners = async (payload) => {
   const url = config.endpoints.practitioner.createPractitioner;
   const formattedPayload = createPractitioner.toJson(payload);
-  return await http.post(url, formattedPayload);
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+  };
+  return await http.post(url, formattedPayload, { headers });
 };
 
 export const getPractitionerById = async (id) => {
@@ -33,7 +36,12 @@ export const updatePractitionerById = async (payload) => {
     id
   );
   const formattedPayload = createPractitioner.toJson(payload);
-  return await http.put(url, formattedPayload);
+  // return await http.put(url, formattedPayload);
+
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+  };
+  return await http.put(url, formattedPayload, { headers });
 };
 
 export const deletePractitionerById = async (id) => {

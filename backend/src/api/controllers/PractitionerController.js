@@ -57,7 +57,7 @@ module.exports = {
     try {
       await validateCreatePractictioner(req.body);
       const id = Number(req.params.id);
-      const data = req.body;
+      const data = req;
       const updatePractitioner = await updatePractitionerById(id, data);
       return res.status(200).json(successResponse(updatePractitioner));
     } catch (err) {

@@ -170,7 +170,7 @@ router.get('/:id', controller.getPractitionerById);
  *         description: Internal Server error
  */
 
-router.put('/:id', controller.updatePractitionerById);
+router.put('/:id', uploadImageMiddleware, controller.updatePractitionerById);
 
 // delete a user
 

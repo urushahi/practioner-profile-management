@@ -3,7 +3,6 @@ import Badge from '../../components/common/Badge';
 
 const DetailList = (payload) => {
   const { data } = payload;
-  console.log(data);
   const formattedWorkingDays = data?.workingDays?.map((item) => item.label);
   const formattedAllergies =
     data?.allergies?.length > 0
@@ -35,7 +34,6 @@ const DetailList = (payload) => {
     {
       'Working days': formattedWorkingDays?.join(', '),
     },
-
     {
       Allergy: formattedAllergies,
     },
@@ -49,10 +47,10 @@ const DetailList = (payload) => {
 
   return (
     <>
-      {tableValue.map((item) => {
+      {tableValue.map((item, index) => {
         return (
           <>
-            <li key={item?.keys}>
+            <li key={index}>
               <div className='label'>
                 {Object.keys(item).map((item) => item)}
               </div>
