@@ -9,6 +9,7 @@ const config = {
       getAllUsers: '/users/',
       signupUser: '/users/signup',
       signin: '/users/signin',
+      generateToken: '/users/access-token',
     },
     practitioner: {
       getAllPractitioners: '/practitioners/',
