@@ -2,6 +2,9 @@ import axios from 'axios';
 import config from '../config';
 
 import * as tokenService from '../services/token';
+import { generateToken } from '../services/auth';
+import { redirect } from 'react-router';
+import { routes } from '../constants/routes';
 
 const AUTHORIZATION_HEADER = 'Authorization';
 
@@ -45,50 +48,53 @@ http.interceptors.request.use(
   }
 );
 
-// http.interceptors.response.use(
-//   (response) => response,
-//   /**
-//    * This interceptor checks if the response had a 401 status code, which means
-//    * that the access token used for the request has expired. It then refreshes
-//    * the access token and resends the original request.
-//    */
-//   (error) => {
-//     const { response } = error;
+let subscribers = []; // holds original requests before access token expires which are trigerred with new access token
+function onAccessTokenFetched(access_token) {
+  // takes new access token as parameter and filters the subscriver array and executes each with new accesc token
+  subscribers = subscribers.filter((callback) => callback(access_token));
+}
 
-//     // if (gotUnauthorizedError(response)) {
-//     //   tokenService.clear();
-//     //   if (location.pathname !== "/login") {
-//     //     return history.navigate(routes.LOGIN);
-//     //   }
-//     // }
+function addSubscriber(callback) {
+  // pushes original request to subscribers array with callback functions
+  //  that append new access token in the header and exceutes the response next
+  subscribers.push(callback);
+}
 
-//     // if (gotPageNotFoundError(response)) {
-//     //   return history.navigate(routes.PAGE_NOT_FOUND);
-//     // }
+http.interceptors.response.use(
+  (response) => {
+    return response; // return the response if error not occured
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    const { statusCode, message } = error.response.data;
 
-//     // if (gotAccessDeniedError(response)) {
-//     //   return history.push({ pathname: PUBLIC_ROUTES.ACCESS_DENIED, state: { status: response?.status } });
-//     // }
+    if (statusCode === 403 && message === 'Access token has expired') {
+      try {
+        const response = await generateToken();
+        const newAccessToken = response.data.data.access_token;
+        tokenService.setAccessToken(newAccessToken);
+        onAccessTokenFetched(newAccessToken);
 
-//     // if (location.pathname !== "/login" && error.code === "ECONNABORTED") {
-//     //   return history.navigate(routes.REQUEST_TIMEOUT);
-//     // }
-//     return Promise.reject(error); //eslint-disable-line
-//   }
-// );
+        // handles the retry of original failed request with new access token
+        // - It is a promise which is resolved when original request is retried with new updated token
+        const retryOriginalRequest = new Promise((resolve) => {
+          addSubscriber((access_token) => {
+            originalRequest.headers.Authorization = `Bearer ${access_token}`;
+            resolve(axios(originalRequest));
+          });
+        });
 
-/**
- * Returns true if the response status is set as 401.
- *
- * @param {Object} response Axios response object.
- * @returns {boolean}
- */
-// const gotUnauthorizedError = (response) =>
-//   response && response.status && response.status === 401;
-
-// // const gotAccessDeniedError = response => response && response.status && response.status === 403;
-
-// const gotPageNotFoundError = (response) =>
-//   response && response.status && response.status === 404;
-
+        return retryOriginalRequest; // effectively retries original request
+      } catch (err) {
+        // Handle refresh token error if necessary
+        console.error('Refresh token error:', err);
+        // Redirect to login page or show an error message
+        redirect(routes.LOGIN);
+        return Promise.reject(error);
+      }
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
 export default http;

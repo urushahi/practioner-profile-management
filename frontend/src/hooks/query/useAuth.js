@@ -75,7 +75,7 @@ export const useLogin = (props) => {
 };
 
 export const loginAction = (response) => {
-  const { access_token, email, name } = response;
+  const { access_token, email, name, refresh_token } = response;
 
   tokenService.persist({
     accessToken: access_token,
@@ -85,4 +85,5 @@ export const loginAction = (response) => {
     name,
     email,
   });
+  tokenService.setRefreshToken(refresh_token);
 };

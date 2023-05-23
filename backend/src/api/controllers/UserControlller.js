@@ -10,6 +10,8 @@ const LoginRequestValidator = require('./../validation/User/LoginRequestValidato
 const {
   checkPassword,
   generateToken,
+  generateRefreshToken,
+  validateRefreshToken,
 } = require('./../services/AuthenticationService');
 
 module.exports = {
@@ -46,11 +48,15 @@ module.exports = {
       await checkPassword(cryptedPassword, password);
 
       const access_token = generateToken(id); // token provided for access
+      const refresh_token = generateRefreshToken(id); // token provided for access
 
       return res
         .status(200)
         .json(
-          successResponse({ access_token, email, name }, 'Login successful')
+          successResponse(
+            { access_token, refresh_token, email, name },
+            'Login successful'
+          )
         );
     } catch (err) {
       if (err.message === 'Validation Failed') {
@@ -67,6 +73,26 @@ module.exports = {
           .json(errorResponse('Email or password do not match', 400));
       }
 
+      return res.status(500).json(errorResponse());
+    }
+  },
+
+  generateAccessToken: async (req, res) => {
+    try {
+      const { refresh_token } = req.body;
+      const data = validateRefreshToken(refresh_token);
+
+      const { userId } = data;
+
+      const access_token = generateToken(userId); // token provided for access
+
+      return res
+        .status(200)
+        .json(successResponse({ access_token }, 'New Acces Token generated'));
+    } catch (err) {
+      if (err.message === 'Refresh Token Error') {
+        return res.status(400).json(errorResponse('Invalid Refresh Token'));
+      }
       return res.status(500).json(errorResponse());
     }
   },

@@ -9,8 +9,15 @@ const authenticateToken = (req, res, next) => {
   }
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
     if (err) {
-      return res.status(403).json(errorResponse('Invalid access token', 403));
+      if (err.name === 'TokenExpiredError') {
+        return res
+          .status(403)
+          .json(errorResponse('Access token has expired', 403));
+      } else {
+        return res.status(403).json(errorResponse('Invalid access token', 403));
+      }
     }
+
     next();
   });
 };
