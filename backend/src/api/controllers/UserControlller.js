@@ -7,6 +7,7 @@ const {
 } = require('./../helpers/apiResponse');
 const CreateUserRequestValidator = require('./../validation/User/CreateUserRequestValidator');
 const LoginRequestValidator = require('./../validation/User/LoginRequestValidator');
+const RequestTokenValidator = require('./../validation/User/RequestTokenValidator');
 const {
   checkPassword,
   generateToken,
@@ -79,6 +80,7 @@ module.exports = {
 
   generateAccessToken: async (req, res) => {
     try {
+      await RequestTokenValidator(req.body);
       const { refresh_token } = req.body;
       const data = validateRefreshToken(refresh_token);
 
@@ -90,6 +92,9 @@ module.exports = {
         .status(200)
         .json(successResponse({ access_token }, 'New Acces Token generated'));
     } catch (err) {
+      if (err.message === 'Validation Failed') {
+        return res.status(422).json(validationFailedResponse(err.errors));
+      }
       if (err.message === 'Refresh Token Error') {
         return res.status(400).json(errorResponse('Invalid Refresh Token'));
       }

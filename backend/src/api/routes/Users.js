@@ -97,7 +97,7 @@ router.post('/signin', controller.signIn);
 /**
  * @swagger
  * /users/access-token:
- *   get:
+ *   post:
  *     summary: API to generate access token from refresh token
  *     description: API to generate access token from refresh token
  *     tags:
