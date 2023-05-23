@@ -30,7 +30,8 @@ module.exports = {
   },
 
   createPractitioner: async (data) => {
-    const { working_days, allergies, ...payload } = data;
+    const { working_days, allergies, ...payload } = data.body;
+    const fileURL = data.fileURL;
     try {
       const practitioner = await prisma.practitioner.findUnique({
         where: {
@@ -41,8 +42,12 @@ module.exports = {
       if (practitioner) {
         throw new Error('Email already exists');
       }
+
       const createPractitioners = await prisma.practitioner.create({
-        data: payload,
+        data: {
+          image: fileURL,
+          ...payload,
+        },
         include: {
           working_days: true,
           allergies: true,
@@ -50,7 +55,7 @@ module.exports = {
       });
       await prisma.workingDay.createMany({
         data: working_days.map((day) => ({
-          day,
+          day: parseInt(day),
           practitioner_id: createPractitioners.id,
         })),
       });
@@ -59,7 +64,7 @@ module.exports = {
       if (allergies && allergies.length > 0) {
         await prisma.practitionerAllergy.createMany({
           data: allergies.map((allergy) => ({
-            allergy_id: allergy,
+            allergy_id: parseInt(allergy),
             practitioner_id: createPractitioners.id,
           })),
         });

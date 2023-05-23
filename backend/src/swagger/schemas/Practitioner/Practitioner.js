@@ -16,6 +16,10 @@ module.exports = {
       description: 'Last name of practitioner',
       example: 'Doe',
     },
+    image: {
+      type: 'string',
+      description: 'URL of uploaded image',
+    },
     email: {
       type: 'string',
       description: 'Email address of practitioner',

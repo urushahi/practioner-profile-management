@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const controller = require('../controllers/PractitionerController');
+const uploadImageMiddleware = require('../middlewares/uploadImageMiddleware');
 
 // create practitioner
 /**
@@ -18,7 +19,7 @@ const controller = require('../controllers/PractitionerController');
  *       description: Request body
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             $ref: '#/components/schemas/CreatePractitionerRequests'
  *     responses:
@@ -41,7 +42,7 @@ const controller = require('../controllers/PractitionerController');
  *       '500':
  *         description: Internal Server error
  */
-router.post('/', controller.createPractitioner);
+router.post('/', uploadImageMiddleware, controller.createPractitioner);
 
 // get all practitioners
 /**

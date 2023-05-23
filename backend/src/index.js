@@ -19,11 +19,12 @@ const authenticateToken = require('./api/middlewares/authenticate');
 // middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.listen(5000, () => {
   console.log('server has started on port 5000');
 });
 
 app.use('/users', userRouter);
-app.use('/practitioners', authenticateToken, practitionerRouter);
-app.use('/allergies', authenticateToken, allergyRoutes);
+app.use('/practitioners', practitionerRouter);
+app.use('/allergies', allergyRoutes);
