@@ -28,24 +28,23 @@ export default function toJson(payload) {
     end_time: endTime,
   };
 
-  if (image && Object.keys(image).length > 0) {
-    jsonPayload.image = convertToJson(image);
+  const formData = new FormData();
+
+  for (const key in jsonPayload) {
+    if (key === 'working_days' || key === 'allergies') {
+      jsonPayload[key].forEach((item) => formData.append(`${key}[]`, item));
+    } else {
+      formData.append(key, jsonPayload[key]);
+    }
   }
 
-  return jsonPayload;
+  if (image instanceof FormData) {
+    formData.append('image', image.get('image'));
+  }
+
+  return formData;
 }
 
 const mapArray = (data) => {
   return data?.map((item) => item.value);
-};
-
-// Convert the FormData object to JSON
-const convertToJson = (image) => {
-  if (typeof image === 'object' && image !== null) {
-    const jsonData = {};
-    Object.entries(image).forEach(([key, value]) => {
-      jsonData[key] = value;
-    });
-    return jsonData;
-  }
 };
