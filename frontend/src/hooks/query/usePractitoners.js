@@ -35,10 +35,15 @@ export const useCreatePractitioners = (props) => {
         onSuccess(id);
       },
       onError: (error) => {
-        const errors = error?.response?.data?.errors || {};
-        Object.entries(errors).forEach(([key, value]) => {
-          formik.setFieldError(key, value);
-        });
+        if (error?.response?.status === 409) {
+          return formik.setFieldError('email', error?.response?.data?.message);
+        }
+        if (error?.response?.status === 422) {
+          const errors = error?.response?.data?.errors || {};
+          Object.entries(errors).forEach(([key, value]) => {
+            formik.setFieldError(key, value);
+          });
+        }
         onError(error);
       },
     }
