@@ -1,5 +1,9 @@
 # Profile Management System - Backend
 
+## Introduction
+
+This is the rest API for Practitioner Profile Management System.
+
 ## Set Up process
 
 - Install the necessary dependencies for backend by running following command `npm install`
