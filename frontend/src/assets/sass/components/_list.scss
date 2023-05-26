@@ -1,0 +1,36 @@
+.list {
+  &-nav {
+    display: flex;
+    li {
+      a {
+        color: getColor('grey.7');
+        &.active {
+          color: getColor('secondary.base');
+          font-weight: 500;
+        }
+      }
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
+  &-detail {
+    li {
+      display: grid;
+      grid-template-columns: 220px auto;
+      align-items: center;
+      .label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: getColor('grey.4');
+      }
+      .detail {
+        font-size: 1rem;
+        color: getColor('grey.4');
+      }
+      &:not(:last-child) {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}

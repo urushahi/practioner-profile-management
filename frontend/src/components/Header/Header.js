@@ -1,53 +1,42 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-import { BrowserRoutes as routes } from '../../routes/routes';
+import { routes } from '../../constants/routes';
+import { logout } from '../../services/auth';
+import { FaRegUser } from 'react-icons/fa';
+import { MdLogout } from 'react-icons/md';
+import * as tokenService from '../../services/token';
 
 const Header = () => {
-  const headerRoutes = [
-    {
-      to: routes.DASHBOARD,
-      title: 'Practitioners Lists',
-    },
-    // {
-    //   to: routes.EVALUATION,
-    //   title: 'Evaluation',
-    // },
-    // {
-    //   to: routes.MODELS,
-    //   title: 'Models',
-    // },
-  ];
-
   const navigate = useNavigate();
+  const { name } = tokenService.getAuthDetail();
 
-  const logoutUser = useCallback(() => {
-    // logout();
-    window.location.reload();
-    return navigate(routes.LOGIN);
-  }, []);
+  const logoutUser = () => {
+    logout();
+    return navigate('/login');
+  };
   return (
     <header className='header__dashboard'>
-      <div className='container'>
-        <div className='header__dashboard--left'>
-          <h3 className='logo'>Practitioner's Profile Management System</h3>
+      <div className='header__dashboard--left'>
+        <h3 className='logo'>Practitioner's Profile Management System</h3>
 
-          {/* <ul className='list list__nav ml-10x d-sm-flex d-none'>
-            {headerRoutes.map(({ to, title }, i) => (
-              <li key={i}>
-                <NavLink>{title}</NavLink>
-              </li>
-            ))}
-          </ul> */}
+        <ul className='list list-nav'>
+          <li>
+            <NavLink to={routes.DASHBOARD}>Practitioner</NavLink>
+          </li>
+          <li>
+            <NavLink to={routes.ALLERGY}>Allergy</NavLink>
+          </li>
+        </ul>
+      </div>
+      <div className='header__dashboard--right'>
+        <div className='d-flex align-items-center mr-4x'>
+          <div className='avatar avatar--round bg-primary--base color-white--base mr-2x'>
+            <FaRegUser size={20} />
+          </div>
+          <p className='text-capitalize'>{name}</p>
         </div>
-        <div className='header__dashboard--right'>
-          <button
-            className='btn btn-error--outlined btn--sm'
-            onClick={logoutUser}
-          >
-            Logout
-          </button>
-        </div>
+        <MdLogout size={20} onClick={() => logoutUser()} className='logout' />
       </div>
     </header>
   );

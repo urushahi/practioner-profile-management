@@ -9,3 +9,8 @@ export const createUsersSchema = Yup.object({
     'Passwords must match'
   ),
 });
+
+export const createLoginSchema = Yup.object({
+  email: Yup.string().email().required('Please Enter valid email'),
+  password: Yup.string().required('Please enter a valid pasword'),
+});

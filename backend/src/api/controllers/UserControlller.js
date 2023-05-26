@@ -1,60 +1,104 @@
-const pool = require('../../config');
+const { createUser, checkUser } = require('../services/UserServices');
+
 const {
-  getUsers,
-  createUser,
-  getUsersById,
-  updateUserById,
-  deleteUserById,
-} = require('../services/UserServices');
+  validationFailedResponse,
+  errorResponse,
+  successResponse,
+} = require('./../helpers/apiResponse');
+const CreateUserRequestValidator = require('./../validation/User/CreateUserRequestValidator');
+const LoginRequestValidator = require('./../validation/User/LoginRequestValidator');
+const RequestTokenValidator = require('./../validation/User/RequestTokenValidator');
+const {
+  checkPassword,
+  generateToken,
+  generateRefreshToken,
+  validateRefreshToken,
+} = require('./../services/AuthenticationService');
 
 module.exports = {
-  getUsers: async (req, res) => {
+  signUp: async (req, res) => {
     try {
-      const allUsers = await getUsers();
-      res.json(allUsers);
-    } catch (err) {
-      console.error(err.message);
-    }
-  },
-
-  createUser: async (req, res) => {
-    try {
+      await CreateUserRequestValidator(req.body); // calls validate() from validation/users/createUserRequestValidator/
       const newUser = await createUser(req.body);
-      res.json(newUser);
+      res
+        .status(201) // 201 status code - new data created
+        .json(successResponse(newUser, 'User Created successfully', 201));
     } catch (err) {
-      console.error(err.message);
+      if (err.message === 'Validation Failed') {
+        const response = validationFailedResponse(err.errors);
+        return res.status(response.statusCode).json(response);
+      }
+      if (err.message === 'Email already exists') {
+        return res.status(409).json(errorResponse(err.message, 409));
+      }
+      return res.status(500).json(errorResponse());
     }
   },
 
-  getUserById: async (req, res) => {
+  signIn: async (req, res) => {
     try {
-      const id = Number(req.params.id);
-      const getUserById = await getUsersById(id);
-      res.json(getUserById);
+      await LoginRequestValidator(req.body);
+      const { email, password } = req.body;
+      const userData = await checkUser({ email });
+
+      if (!userData) {
+        throw new Error('User not found');
+      }
+
+      const { password: cryptedPassword, id, name } = userData;
+      await checkPassword(cryptedPassword, password);
+
+      const access_token = generateToken(id); // token provided for access
+      const refresh_token = generateRefreshToken(id); // token provided for access
+
+      return res
+        .status(200)
+        .json(
+          successResponse(
+            { access_token, refresh_token, email, name },
+            'Login successful'
+          )
+        );
     } catch (err) {
-      console.error(err.message);
+      if (err.message === 'Validation Failed') {
+        return res.status(422).json(validationFailedResponse(err.errors));
+      }
+
+      if (err.message === 'User not found') {
+        return res.status(404).json(errorResponse('Email not found', 404));
+      }
+
+      if (err.message === 'Password donot match') {
+        return res
+          .status(400)
+          .json(errorResponse('Email or password do not match', 400));
+      }
+
+      return res.status(500).json(errorResponse());
     }
   },
 
-  updateUserById: async (req, res) => {
+  generateAccessToken: async (req, res) => {
     try {
-      const id = Number(req.params.id);
-      const { name, email } = req.body;
-      const data = { name, email };
-      const updateUser = await updateUserById(id, data);
-      res.json(updateUser);
-    } catch (err) {
-      console.error(err.message);
-    }
-  },
+      await RequestTokenValidator(req.body);
+      const { refresh_token } = req.body;
+      const data = validateRefreshToken(refresh_token);
 
-  deleteUserById: async (req, res) => {
-    try {
-      const id = Number(req.params.id);
-      const deleteUser = await deleteUserById(id);
-      res.json(deleteUser);
+      const { userId } = data;
+
+      const access_token = generateToken(userId); // token provided for access
+
+      return res
+        .status(200)
+        .json(successResponse({ access_token }, 'New Acces Token generated'));
     } catch (err) {
-      console.error(err.message);
+      if (err.message === 'Validation Failed') {
+        return res.status(422).json(validationFailedResponse(err.errors));
+      }
+      if (err.message === 'Refresh Token Error') {
+        return res.status(400).json(errorResponse('Invalid Refresh Token'));
+      }
+      return res.status(500).json(errorResponse());
     }
   },
 };

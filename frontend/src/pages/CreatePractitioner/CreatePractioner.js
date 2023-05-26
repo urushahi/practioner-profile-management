@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import InputComponent from '../../components/common/InputComponent';
 import {
   useCreatePractitioners,
@@ -9,16 +9,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { hideSideBarAction } from '../../slices/ui/sidebarSlice';
 import { MdClose } from 'react-icons/md';
+import { useAllergies } from '../../hooks/query/useAllergies';
+import ReactSelect from '../../components/common/ReactSelect/ReactSelect';
+import { WorkingDays } from '../../constants/constants';
+import InputCheckbox from '../../components/common/InputCheckbox';
+import * as toast from '../../utils/toast';
 
 const initialValues = {
   firstName: '',
   lastName: '',
   email: '',
+  image: '',
   contact: '',
   dob: '',
-  workingDays: '',
+  workingDays: [],
   startTime: '',
   endTime: '',
+  isIcuSpecialist: false,
+  allergies: [],
 };
 const CreatePractioner = (props) => {
   const { className } = props;
@@ -29,20 +37,46 @@ const CreatePractioner = (props) => {
   const queryClient = useQueryClient();
 
   const { data } = usePractitionersById(id);
+  const { data: allergy } = useAllergies();
 
-  const { values, handleChange, errors, handleSubmit, resetForm } =
-    useCreatePractitioners({
-      initialValues: data ? data : initialValues,
-      onSuccess: () => {
-        dispatch(hideSideBarAction());
-        queryClient.invalidateQueries('practitioners-list');
-      },
-      id,
-    });
+  const {
+    values,
+    handleChange,
+    errors,
+    handleSubmit,
+    setFieldTouched,
+    setFieldValue,
+    resetForm,
+    handleBlur,
+    touched,
+  } = useCreatePractitioners({
+    initialValues: data ? data : initialValues,
+    onSuccess: (id) => {
+      resetForm();
+      toast.success({
+        title: 'Success',
+        message: id
+          ? 'Practitioner updated successfully'
+          : 'Practitioner created successfully',
+      });
+      dispatch(hideSideBarAction());
+      queryClient.invalidateQueries('practitioners-list');
+    },
+    id,
+  });
+
+  const workingDaysOptions = Object.keys(WorkingDays).map((key) => ({
+    value: parseInt(key),
+    label: WorkingDays[key],
+  }));
 
   const closeForm = () => {
     dispatch(hideSideBarAction());
     resetForm();
+  };
+
+  const errorHandler = (inputId) => {
+    return errors?.[inputId] && touched?.[inputId] ? errors?.[inputId] : '';
   };
   return (
     <div className={classNames({ show: show }, 'sideForm-wrapper', className)}>
@@ -53,85 +87,147 @@ const CreatePractioner = (props) => {
             <MdClose size='24' />
           </button>
         </div>
-        <form action='' onSubmit={handleSubmit} className=' mt-4x'>
+        <form
+          encType='multipart/formdata'
+          onSubmit={handleSubmit}
+          className=' mt-4x'
+        >
           <div>
             {id && (
               <InputComponent
                 name={'id'}
                 labelText={'Practitioner Id'}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.id}
                 disabled={true}
               />
             )}
             <InputComponent
+              name={'image'}
+              id={'image'}
+              labelText={'Profile Image'}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.image}
+              errorMessage={errorHandler('image')}
+              setFieldValue={setFieldValue}
+              type='file'
+            />
+            <InputComponent
+              id={'firstName'}
               name={'firstName'}
               labelText={'First Name'}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder={'Enter First name'}
               value={values.firstName}
-              errorMessage={errors.firstName}
+              errorMessage={errorHandler('firstName')}
+              isRequired={true}
             />
             <InputComponent
               name={'lastName'}
+              id={'lastName'}
               labelText={'Last Name'}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder={'Enter Last name'}
               value={values.lastName}
-              errorMessage={errors.lastName}
+              errorMessage={errorHandler('lastName')}
+              isRequired={true}
             />
             <InputComponent
               name={'email'}
+              id={'email'}
               type='email'
               labelText={'Email'}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder={'someone@mail.com'}
               value={values.email}
-              errorMessage={errors.email}
+              disabled={id}
+              isRequired={true}
+              errorMessage={errorHandler('email')}
             />
             <InputComponent
               name={'contact'}
+              id={'contact'}
               labelText={'Contact'}
               onChange={handleChange}
-              // placeholder={'someone@mail.com'}
+              onBlur={handleBlur}
+              placeholder={'example : 9841234567'}
               value={values.contact}
-              errorMessage={errors.contact}
+              isRequired={true}
+              errorMessage={errorHandler('contact')}
             />
+
             <InputComponent
               name={'dob'}
+              id={'dob'}
               labelText={'Date of Birth'}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder={'1999-01-01'}
               value={values.dob}
               type='date'
-              errorMessage={errors.dob}
+              errorMessage={errorHandler('dob')}
+              isRequired={true}
             />
-            <InputComponent
-              type='number'
+            <ReactSelect
+              id={'workingDays'}
+              isMulti={true}
+              options={workingDaysOptions}
               name={'workingDays'}
-              labelText={'Working Days'}
-              onChange={handleChange}
-              placeholder={'Enter Working days'}
-              value={values.workingDays}
-              errorMessage={errors.workingDays}
+              labelText='Working days'
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              selectedOption={values?.['workingDays'] || []}
+              isRequired={true}
+              errorMessage={errorHandler('workingDays')}
             />
+
             <InputComponent
               name={'startTime'}
+              id={'startTime'}
               labelText={'Start Time'}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder={'1999-01-01'}
               value={values.startTime}
               type='time'
-              errorMessage={errors.startTime}
+              errorMessage={errorHandler('startTime')}
+              isRequired={true}
             />
             <InputComponent
               name={'endTime'}
+              id={'endTime'}
               labelText={'End Time'}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder={'1999-01-01'}
               value={values.endTime}
               type='time'
-              errorMessage={errors.endTime}
+              errorMessage={errorHandler('endTime')}
+              isRequired={true}
+            />
+            <InputCheckbox
+              id={'isIcuSpecialist'}
+              name={'isIcuSpecialist'}
+              labelText={'Icu Specialist ?'}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.isIcuSpecialist}
+            />
+            <ReactSelect
+              id={'allergies'}
+              isMulti={true}
+              options={allergy}
+              name={'allergies'}
+              labelText='Allergies'
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              selectedOption={values?.['allergies'] || []}
+              errorMessage={errors.allergies}
             />
           </div>
           <div className='d-flex justify-content-end'>

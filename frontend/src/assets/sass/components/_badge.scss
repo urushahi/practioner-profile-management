@@ -1,0 +1,15 @@
+.badge {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  color: white;
+  text-align: center;
+  background-color: getColor('danger.base');
+  &.active {
+    background-color: getColor('secondary.light');
+  }
+  &-sm {
+    display: inline-block;
+    min-width: 78px;
+  }
+}

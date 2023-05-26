@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   font-weight: inherit;
-  border-radius: 2px;
+  border-radius: 4px;
 
   &:disabled {
     cursor: not-allowed;
@@ -60,6 +60,15 @@
     height: auto;
     line-height: 1;
     background: transparent;
+  }
+
+  @include m(sm) {
+    padding: 0.25rem;
+  }
+  @include m(textOnly) {
+    background: transparent;
+    color: getColor('grey.4');
+    border: 0;
   }
 }
 
@@ -102,12 +111,16 @@
 
   //For Outline Buttons
   .btn-#{$theme-color}--outlined {
-    border-color: $color;
+    border: 1px solid $color;
     color: $color;
+    background-color: transparent;
 
     &:hover {
       background-color: $color;
       color: getColor('white.base');
+    }
+    &:disabled {
+      color: inherit;
     }
   }
 }

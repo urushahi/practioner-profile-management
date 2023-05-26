@@ -24,39 +24,59 @@ const InputComponent = (props) => {
     onKeyDown,
     disabled,
     autoComplete = 'off',
-    size = '',
-    className = '',
     icon = '',
+    setFieldValue,
   } = props;
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append(name, file);
+
+    setFieldValue(name, formData);
+  };
+
   const errorClass = errorMessage ? 'form-group--has-error' : '';
+
   return (
     <>
-      <div
-        className={`form-group ${errorClass} ${
-          size === 'sm' ? 'form-group--sm' : ''
-        } ${className}`}
-      >
+      <div className={`form-group ${errorClass}`}>
         <label className='form-group__label'>
           {labelText}
-          {isRequired && <span className='text-error-base'> *</span>}
+          {isRequired && <span className='color-danger--base'> *</span>}
         </label>
         <div className={`${icon && 'input-group'}  `}>
-          <input
-            id={id}
-            type={type}
-            disabled={disabled}
-            name={name}
-            defaultValue={value}
-            onBlur={onBlur}
-            readOnly={isReadOnly}
-            onChange={onChange}
-            style={{ fontSize }}
-            placeholder={placeholder}
-            className='form-group__control'
-            onKeyDown={onKeyDown}
-            autoComplete={autoComplete}
-          />
+          {type === 'file' ? (
+            <input
+              id={id}
+              type={type}
+              disabled={disabled}
+              name={name}
+              onBlur={onBlur}
+              onChange={handleFileChange} // Use custom file change handler
+              style={{ fontSize }}
+              className='form-group__file'
+              accept='image/*' // Limit accepted files to images
+              autoComplete={autoComplete}
+            />
+          ) : (
+            <input
+              id={id}
+              type={type}
+              disabled={disabled}
+              name={name}
+              value={value}
+              onBlur={onBlur}
+              readOnly={isReadOnly}
+              onChange={onChange}
+              style={{ fontSize }}
+              placeholder={placeholder}
+              className='form-group__control'
+              onKeyDown={onKeyDown}
+              autoComplete={autoComplete}
+            />
+          )}
           {icon}
         </div>
         {errorMessage && (

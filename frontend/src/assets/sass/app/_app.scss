@@ -8,6 +8,23 @@
   height: 100%;
 }
 .logo {
-  font-size: 28px;
+  font-size: 1rem;
   color: getColor('primary.base');
+}
+.title {
+  color: getColor('grey.4');
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.link {
+  &-white {
+    color: white;
+    &:hover {
+      color: getColor('grey.3');
+    }
+  }
+}
+
+.w--100 {
+  width: 100%;
 }

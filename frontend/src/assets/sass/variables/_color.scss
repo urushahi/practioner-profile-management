@@ -2,9 +2,9 @@
 $white: #ffffff !default;
 $black: #000000 !default;
 
-$primary: #194e8f !default;
-$secondary: #198f19 !default;
-$success: #198f19 !default;
+$primary: #307694 !default;
+$secondary: #41a753 !default;
+$success: #41a753 !default;
 
 // $green: #198f19 !default;
 $red: #ef5350 !default;
@@ -43,10 +43,15 @@ $colorMap: (
     'disabled': #e6ebee,
     '1': #f9f9f9,
     '2': #b8c2c8,
-    '3': #959595,
+    '3': #cccccc,
     '4': #333333,
     '5': rgba($black, 0.2),
     '6': rgba($black, 0.6),
+    '7': #706f6f,
+  ),
+  'blue': (
+    'base': $primary,
+    '1': #307694,
   ),
 );
 

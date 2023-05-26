@@ -7,13 +7,23 @@ const config = {
   endpoints: {
     users: {
       getAllUsers: '/users/',
-      signupUser: '/users/',
+      signupUser: '/users/signup',
+      signin: '/users/signin',
+      generateToken: '/users/access-token',
     },
     practitioner: {
       getAllPractitioners: '/practitioners/',
       createPractitioner: '/practitioners/',
-      getPractitionersById: '/practitioners/',
-      updatePractitionersById: '/practitioners/',
+      getPractitionersById: '/practitioners/:id',
+      updatePractitionersById: '/practitioners/:id',
+      deletePractitionersById: '/practitioners/:id',
+    },
+    allergies: {
+      getAllAllergies: '/allergies/',
+      createAllergy: '/allergies/',
+      getAllergyById: '/allergies/:id',
+      updateAllergyById: '/allergies/:id',
+      deleteAllergyById: '/allergies/:id',
     },
   },
 };

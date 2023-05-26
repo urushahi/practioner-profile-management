@@ -1,35 +1,41 @@
-import { getFormattedDate, getFormattedTime } from '../../utils/date';
+import { getFormattedDate } from '../../utils/date';
 
 export default function fromJson(payload) {
-  const data = payload.map(mappedData);
-
+  const data = payload?.map(mappedData);
   return data;
 }
 
 function mappedData(practitioner) {
   const {
-    practitioner_id: id,
+    id,
     first_name: firstName,
     last_name: lastName,
     email,
     contact,
     dob,
     working_days: workingDays,
+    is_ICU_Specialist: isIcuSpecialist,
+    allergies,
     start_time: startTime,
     end_time: endTime,
     created_date: createdDate,
     updated_date: updatedDate,
+    image,
   } = practitioner;
   return {
     id,
+    name: firstName + ' ' + lastName,
     firstName,
     lastName,
     email,
     contact,
     dob: getFormattedDate(dob),
+    isIcuSpecialist,
     workingDays,
-    startTime: getFormattedTime(startTime),
-    endTime: getFormattedTime(endTime),
+    image,
+    allergies,
+    startTime,
+    endTime,
     createdDate: getFormattedDate(createdDate),
     updatedDate: getFormattedDate(updatedDate),
   };

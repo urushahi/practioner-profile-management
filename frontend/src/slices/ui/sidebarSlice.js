@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const INITIAL_STATE = {
-  submitHandler: () => {},
   sidebar: {
     show: false,
-    id: 1,
+    id: '',
     title: '',
   },
 };
@@ -16,11 +15,9 @@ const sidebarSlice = createSlice({
       state.sidebar.show = true;
       state.sidebar.id = action?.payload?.id;
       state.sidebar.title = action?.payload?.title;
-      console.log(action?.payload?.content);
     },
     hideSideBarAction: (state) => {
       state.sidebar.show = false;
-      state.sidebar.id = null;
       state.sidebar.title = '';
     },
   },
@@ -28,7 +25,6 @@ const sidebarSlice = createSlice({
 
 const { actions, reducer } = sidebarSlice;
 
-export const { showSideBarAction, hideSideBarAction, toggleSideBarAction } =
-  actions;
+export const { showSideBarAction, hideSideBarAction } = actions;
 
 export default reducer;

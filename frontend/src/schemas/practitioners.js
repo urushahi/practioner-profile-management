@@ -6,7 +6,13 @@ export const createPractitionerSchema = Yup.object({
   email: Yup.string().email().required('Please Enter valid email'),
   contact: Yup.string().required('Please Enter contact number'),
   dob: Yup.date().max(new Date()).required('Please Enter Valid Date'),
-  workingDays: Yup.number().required('Please Enter number of working days'),
+  workingDays: Yup.array()
+    .required('Please Select any one of working days')
+    .test(
+      'is-non-empty',
+      'Please Select any one of working days',
+      (value) => value && value.length > 0
+    ),
   startTime: Yup.string().required('Please Enter start time'),
   endTime: Yup.string().required('Please Enter end time'),
 });
