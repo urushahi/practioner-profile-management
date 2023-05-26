@@ -1,4 +1,4 @@
-# Profile Management System
+# Practitioner Profile Management System
 
 The Practitioner Profile Management System is an application designed to facilitate the management of practitioner profiles within a healthcare organization. The administrator can sign up with the required details and log in with their credentials. The main feature of ths system is it enables administrators to create, view, update, and delete practitioner profiles.
 
