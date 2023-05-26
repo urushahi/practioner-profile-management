@@ -36,7 +36,6 @@ export const updatePractitionerById = async (payload) => {
     id
   );
   const formattedPayload = createPractitioner.toJson(payload);
-  // return await http.put(url, formattedPayload);
 
   const headers = {
     'Content-Type': 'multipart/form-data',

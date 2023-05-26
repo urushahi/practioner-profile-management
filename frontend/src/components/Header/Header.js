@@ -34,7 +34,7 @@ const Header = () => {
           <div className='avatar avatar--round bg-primary--base color-white--base mr-2x'>
             <FaRegUser size={20} />
           </div>
-          <p>{name}</p>
+          <p className='text-capitalize'>{name}</p>
         </div>
         <MdLogout size={20} onClick={() => logoutUser()} className='logout' />
       </div>

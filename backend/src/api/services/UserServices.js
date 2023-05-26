@@ -76,32 +76,4 @@ module.exports = {
       res.status(500).json({ error: 'Failed to login' });
     }
   },
-
-  // updateUserById: (id, data) => {
-  //   try {
-  //     // const {name,email} = data;
-  //     const user = prisma.user.update({
-  //       where: {
-  //         id,
-  //       },
-  //       data,
-  //     });
-  //     return user;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // },
-  // deleteUserById: (id, data) => {
-  //   try {
-  //     // const {name,email} = data;
-  //     const deleteUser = prisma.user.delete({
-  //       where: {
-  //         id,
-  //       },
-  //     });
-  //     return deleteUser;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // },
 };

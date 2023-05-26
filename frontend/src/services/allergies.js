@@ -13,7 +13,6 @@ export const fetchAllergies = async (payload = {}) => {
 export const createAllergies = async (payload) => {
   const url = config.endpoints.allergies.createAllergy;
   const formattedPayload = createAllergy.toJson(payload);
-  console.log(formattedPayload);
   return await http.post(url, formattedPayload);
 };
 

@@ -41,7 +41,6 @@ const ReactSelect = (props) => {
           onBlur={() => setFieldTouched(id, false)}
           onChange={(option) => {
             if (isMulti) {
-              console.log(option);
               if (!option) {
                 return setFieldValue(id, [option]);
               }

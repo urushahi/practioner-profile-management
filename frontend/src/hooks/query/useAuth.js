@@ -37,7 +37,6 @@ export function useSignUp(props) {
     ...defaultConfig,
     displayName: 'Create Users',
   });
-  console.log(formik);
   return {
     ...formik,
     ...mutation,
