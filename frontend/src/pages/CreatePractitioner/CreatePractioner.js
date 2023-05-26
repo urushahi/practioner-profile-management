@@ -106,7 +106,7 @@ const CreatePractioner = (props) => {
             <InputComponent
               name={'image'}
               id={'image'}
-              labelText={'Image'}
+              labelText={'Profile Image'}
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.image}

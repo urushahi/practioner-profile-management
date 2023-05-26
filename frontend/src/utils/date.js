@@ -9,8 +9,6 @@ export const getTimeStampFromTime = (time) => {
 // const time = '12:34:56';
 // const timestamp = getTimeStampFromTime(time);
 
-// console.log(timestamp);
-
 // convertTimeStamp to date
 export const getFormattedDate = (timestamp) => {
   const date = moment(timestamp).format('YYYY-MM-DD');

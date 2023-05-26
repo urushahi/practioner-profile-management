@@ -6,7 +6,7 @@ const generateToken = (userId) => {
     userId,
   };
   const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: 60,
+    expiresIn: '3h',
   });
 
   return token;
@@ -17,7 +17,7 @@ const generateRefreshToken = (userId) => {
     userId,
   };
   const token = jwt.sign(payload, process.env.REFERSH_TOKEN_SECRET, {
-    expiresIn: '1h',
+    expiresIn: '6h',
   });
   return token;
 };

@@ -26,7 +26,6 @@ const http = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  // timeout: REQUEST_TIMEOUT.TIME,
 });
 
 /**
